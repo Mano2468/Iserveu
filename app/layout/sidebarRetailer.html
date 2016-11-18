@@ -1,0 +1,109 @@
+<div class="nav-wrapper" ng-controller="RetailSideBarCtrl">
+    <ul id="nav" class="nav" data-slim-scroll data-collapse-nav data-highlight-active>
+        <li class="nav-title">
+            <span data-translate="NAVIGATION"></span>
+        </li>
+        <li>
+            <a md-button aria-label="meanu" href="#/dashboard">
+                <i class="zmdi zmdi-home"></i>
+                <span data-translate="DASHBOARD"></span>
+            </a>
+        </li>
+        <li>
+            <a md-button aria-label="meanu" href="#/">
+                <i class="zmdi zmdi-assignment-account"></i>
+                <span data-translate="APPS"></span>
+            </a>
+            <ul>
+                <!-- ng-show="Featurecheck('4')||Featurecheck('5')||Featurecheck('9')||Featurecheck('10')||Featurecheck('14')||Featurecheck('15')" -->
+                <li ng-show="Featurecheck('4')||Featurecheck('5')||Featurecheck('9')||Featurecheck('10')||Featurecheck('14')||Featurecheck('11')||Featurecheck('15')">
+                    <a md-button aria-label="meanu" href="#/recharge">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="RECHARGE"></span>
+                    </a>
+                </li>
+								<!-- ng-show="Featurecheck('3')" -->
+                <li ng-show="Featurecheck('3')" >
+                    <a md-button aria-label="meanu" href="#/appfundtransfer">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="FUNDTRANSFER"></span>
+                    </a>
+                </li>
+								<!-- ng-show="Featurecheck('1')" -->
+                <li ng-show="Featurecheck('1')">
+                    <a md-button aria-label="meanu" href="#/moneytransfersignin">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="MONEYTRANSFER"></span>
+                    </a>
+                </li>
+                 <li ng-show="Featurecheck('13')">
+                    <a md-button aria-label="meanu" href="#/CPMoneytransfer">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="CPMONEYTRANSFER"></span>
+                    </a>
+                </li>
+								<!-- ng-show="Featurecheck('2')" -->
+                <li ng-show="Featurecheck('2')" >
+                    <a md-button aria-label="meanu" href="http://localhost:8080/server/g2fundtransferlogin.html?verify={{token}}" target="_blank">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="AUTOLOGIN"></span>
+                    </a>
+                </li>
+								<!-- ng-show="Featurecheck('7')" -->
+                <li ng-show="Featurecheck('7')">
+                    <a md-button aria-label="meanu" href="http://localhost:8080/server/travel.html?verify={{token}}" target="_blank" target="_blank" href="#" >
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="TRAVEL"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a md-button aria-label="meanu" href="#/">
+                <i class="zmdi zmdi-assignment-account"></i>
+                <span data-translate="REPORT"></span>
+            </a>
+            <ul>
+                <li>
+                    <a md-button aria-label="meanu" href="#/transaction">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="TRANSACTION"></span>
+                    </a>
+                </li>
+                <li>
+                    <a md-button aria-label="meanu" href="#/refundstatus">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="Refund Status"></span>
+                    </a>
+                </li>
+								<!-- ng-show="Featurecheck('3')||Featurecheck('8')" -->
+                <li ng-show="Featurecheck('3')||Featurecheck('8')">
+                    <a md-button aria-label="meanu" href="#/agenttransdetails">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="DETAILMONEYTRASFER"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a md-button aria-label="meanu" href="#/">
+                <i class="zmdi zmdi-balance-wallet"></i>
+                <span data-translate="PAYMENT_IN"></span>
+            </a>
+            <ul>
+                <li>
+                    <a md-button aria-label="meanu" href="#/payment">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="PAYMENT_REQUEST"></span>
+                    </a>
+                </li>
+                <li>
+                    <a md-button aria-label="meanu" href="#/paymentrequestreports">
+                        <i class="fa fa-circle"></i>
+                        <span data-translate="PAYMENT_REQUEST_REPORTS"></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

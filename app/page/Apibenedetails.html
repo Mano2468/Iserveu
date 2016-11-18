@@ -1,0 +1,35 @@
+<div class="page"><div class="row ui-section"><div class="col-lg-8 clearfix"><h2 class="section-header">Beneficiary Details</h2></div><div class="col-md-12" ng-controller="ApiBeneDetailscontroller"><div class="panel panel-default"><md-progress-linear md-mode="indeterminate" ng-show="progressbarflag"></md-progress-linear><div class="panel-body"><div class="row" ng-init="CardBalance()"><div class="col-md-12"><div class="col-md-6"><table class="table"><tr><td>Current value</td><td>{{'Rs.'+ Balance.balance}}</td></tr><tr><td>Topup limit</td><td>{{'Rs.'+ Balance.topuplimit}}</td></tr><tr><td>Remaining limit</td><td>{{'Rs.'+ Balance.remaininglimit}}</td></tr></table></div><div class="col-md-2"><a class="pull-left btn btn-info btn-xs" style="margin-left: 15px" ng-click="CardBalance()"><i class="zmdi zmdi-refresh-alt"></i><span> Refresh Balance</span></a></div><div class="col-md-4"><div class="row"><md-button class="md-raised btn-w-xs md-primary pull-right" style="margin-bottom: 5px; margin-right:15px" ng-click="transaction()">Transaction</md-button></div><div class="row"><md-button class="md-raised btn-w-xs md-primary pull-right" style="margin-bottom: 5px; margin-right:15px" ng-click="topup()">TopUp</md-button></div><div class="row"><md-button class="md-raised btn-w-xs md-primary pull-right" style="margin-bottom: 5px; margin-right:15px" ng-click="NewBene()">Add</md-button></div></div></div></div><div class="table-responsive"><table class="table table-striped table-bordered no-margin"><thead><tr><th>Verify Bene</th><th>BeneId</th><th>Bene Name</th><th>Bank Name</th><th>IFSC Code</th><th>Account No.</th><th>Mobile/MMD</th><th>IMPS(IFSC)</th><th>NEFT</th></tr></thead><tbody><tr ng-repeat="item in BeneList"><td><a href="" class="btn btn-warning btn-xs" ng-click="VerifyBene(item)">Verify</a></td><td>{{item.beneid}}</td><td>{{item.benename}}</td><td>{{item.bankname}}</td><td>{{item.ifsccode}}</td><td>{{item.accountno}}</td><td>{{item.mobile}}</td><td><a href="" class="btn btn-success btn-xs" ng-click="addbene(2,item)">Pay Now</a></td><td><a href="" class="btn btn-success btn-xs" ng-click="addbene(8,item)">Pay Now</a></td></tr></tbody></table></div></div></div></div></div></div><script type="text/ng-template" id="Apibenemodal.html"><!--  <div class="modal-header">
+              <h3>Pay</h3>
+            </div> -->
+            <div class="modal-body">
+              <section class="panel panel-default">
+        <div class="panel-body padding-xl">
+          <div class="row">
+            <div class="col-md-12">
+            <form name="" class="form-horizontal form-validation" ng-submit="sendMoney()" >
+            <div class='form-group'>
+                    <label class='control-label col-md-3'>Amount</label>
+                    <div class='col-md-9'>
+                      <div class='col-md-6'>
+                        <div class='form-group internal'>
+                          <input class='form-control'
+                          placeholder="Enter Amount" type='number' name='mobile' data-ng-model="amount" min="1" required> 
+                        </div>
+                      </div>
+                      <div class='col-md-3'>
+                      <md-button class="md-raised btn-w-md md-primary" type="submit" ng-click="ok()"
+                  >Submit</md-button>
+                      </div>  
+                    </div>
+                  </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+     </section>
+              
+            </div>
+            <div class="modal-footer">
+              <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+             <!-- <button ui-wave class="btn btn-flat btn-primary" ng-click="ok()">OK</button> -->
+            </div></script>

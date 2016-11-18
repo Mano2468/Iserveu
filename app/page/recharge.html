@@ -1,0 +1,741 @@
+<div class="page" ng-controller="RechargeCtrl">
+    <div class="row ui-section">
+        <div layout="column">
+            <section class="panel panel-default">
+                <md-progress-linear md-mode="indeterminate" ng-show="progressbarflag"></md-progress-linear>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <md-tabs md-dynamic-height="true">
+                                <md-tab id="tab1">
+                                    <md-tab-label>Mobile</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="MobileRecharge()" name="MobileForm">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Phone Number</label><input type="tel" class="form-control" placeholder="Enter mobile no." ng-model="RechargeModel.phnumber" name="Mmobileno" maxlength="10" required ng-change="OperatorCheck()">
+                                                            <span class="error-message" ng-show="MobileForm.Mmobileno.$dirty
+                        && MobileForm.Mmobileno.$error.pattern" style="color: red">The phone number should be of 10 digits</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Select Operator</label>
+                                                            <select ng-model="RechargeModel.operator" class="form-control" name="Moperator" style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="AIRCEL">AIRCEL</option>
+                                                                <option value="AIRTEL">AIRTEL</option>
+                                                                <option value="BSNL">BSNL</option>
+                                                                <option value="IDEA">IDEA</option>
+                                                                <option value="LOOP">LOOP</option>
+                                                                <option value="MTNL DELHI">MTNL DELHI</option>
+                                                                <option value="MTNL MUMBAI">MTNL MUMBAI</option>
+                                                                <option value="MTS">MTS</option>
+                                                                <option value="RELIANCE CDMA">RELIANCE CDMA</option>
+                                                                <option value="RELIANCE GSM">RELIANCE GSM</option>
+                                                                <option value="TATA DOCOMO">TATA DOCOMO</option>
+                                                                <option value="TELENOR">TELENOR</option>
+                                                                <option value="VIDEOCON">VIDEOCON</option>
+                                                                <option value="VIRGIN CDMA">VIRGIN CDMA</option>
+                                                                <option value="VIRGIN GSM">VIRGIN GSM</option>
+                                                                <option value="VODAFONE">VODAFONE</option>
+                                                                <option value="TataIndicom">TataIndicom</option>
+                                                                <option value="T24(Flexi)">T24(Flexi)</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="MobileForm.Moperator.$dirty
+                      && MobileForm.Moperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Amount</label><input type="number" class="form-control" step="0.01" placeholder="Enter Amount" ng-model="RechargeModel.amount" name="Mamount" required min="1" ng-pattern="/^[1-9][0-9]*$/">
+                                                            <span class="error-message" ng-show="MobileForm.Mamount.$dirty
+                      && MobileForm.Mamount.$error.required" style="color: red">Please Enter Amount</span>
+                                                            <span class="error-message" ng-show="MobileForm.Mamount.$dirty
+                      && MobileForm.Mamount.$error.pattern" style="color: red">Please Enter Amount</span><br>
+                                                            <div class="label label-info" style="float: right" ng-click="show = !show" ng-hide="!plansflag">Browse Plans</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center" style="margin-top: 2%">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit(MobileForm)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-show="show || circleEnable" ng-init="show=false">
+                                                <div class="col-md-3">
+                                                    <label>Select Circle</label>
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <select class="form-control" ng-model="RechargeModel.circle" name="Mcircle" ng-required="circleEnable">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="AndamanNicrobar">Andaman Nicrobar</option>
+                                                                <option value="ArunachalPradesh">Arunachal Pradesh</option>
+                                                                <option value="Assam">Assam</option>
+                                                                <option value="Bangalore">Bangalore</option>
+                                                                <option value="Bihar">Bihar</option>
+                                                                <option value="Chennai">Chennai</option>
+                                                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                                                <option value="DadraandNagarHaveli">Dadraand NagarHaveli</option>
+                                                                <option value="DamanandDiu">Damanand Diu</option>
+                                                                <option value="Delhi">Delhi</option>
+                                                                <option value="Goa">Goa</option>
+                                                                <option value="Gujarat">Gujarat</option>
+                                                                <option value="Haryana">Haryana</option>
+                                                                <option value="HimachalPradesh">HimachalPradesh</option>
+                                                                <option value="JammuAndKashmir">Jammu And Kashmir</option>
+                                                                <option value="Jharkhand">Jharkhand</option>
+                                                                <option value="Karnataka">Karnataka</option>
+                                                                <option value="Kerala">Kerala</option>
+                                                                <option value="Kolkata">Kolkata</option>
+                                                                <option value="MadhyaPradesh">Madhya Pradesh</option>
+                                                                <option value="Maharashtra">Maharashtra</option>
+                                                                <option value="Manipur">Manipur</option>
+                                                                <option value="Meghalaya">Meghalaya</option>
+                                                                <option value="Mizoram">Mizoram</option>
+                                                                <option value="Mumbai">Mumbai</option>
+                                                                <option value="Nagaland">Nagaland</option>
+                                                                <option value="Orissa">Orissa</option>
+                                                                <option value="Pondicherry">Pondicherry</option>
+                                                                <option value="Punjab">Punjab</option>
+                                                                <option value="Rajasthan">Rajasthan</option>
+                                                                <option value="Sikkim">Sikkim</option>
+                                                                <option value="TamilNadu">TamilNadu</option>
+                                                                <option value="Tripura">Tripura</option>
+                                                                <option value="Uttar Pradesh East">Uttar Pradesh East</option>
+                                                                <option value="Uttar Pradesh West">Uttar Pradesh West</option>
+                                                                <option value="Uttrakhand">Uttrakhand</option>
+                                                                <option value="West Bengal">West Bengal</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-show="show">
+                                                <div class="col-md-12" ng-show="plans">
+                                                    <div class="ui-tab-container ui-tab-horizontal">
+                                                        <uib-tabset justified="false" class="ui-tab">
+                                                            <uib-tab heading="Top Up" ng-click="browseplans('TUP')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-bordered table-condensed table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="topup in plansdetails track by $index">
+                                                                            <td class="text-center">{{topup.Validity}}</td>
+                                                                            <td class="text-center">{{topup.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(topup.Amount)">Rs.{{topup.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Full Talktime" ng-click="browseplans('FTT')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="Fullt in plansdetails track by $index">
+                                                                            <td class="text-center">{{Fullt.Validity}}</td>
+                                                                            <td class="text-center">{{Fullt.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(Fullt.Amount)">Rs.{{Fullt.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="3G Data" ng-click="browseplans('3G')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="TG in plansdetails track by $index">
+                                                                            <td class="text-center">{{TG.Validity}}</td>
+                                                                            <td class="text-center">{{TG.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(TG.Amount)">Rs.{{TG.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="2G Data" ng-click="browseplans('2G')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="TwoG in plansdetails track by $index">
+                                                                            <td class="text-center">{{TwoG.Validity}}</td>
+                                                                            <td class="text-center">{{TwoG.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(TwoG.Amount)">Rs.{{TwoG.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Roaming" ng-click="browseplans('RMG')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin" style="width: 100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="Roaming in plansdetails track by $index">
+                                                                            <td class="text-center">{{Roaming.Validity}}</td>
+                                                                            <td class="text-center">{{Roaming.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(Roaming.Amount)">Rs.{{Roaming.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="SMS Pack" ng-click="browseplans('SMS')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="SMS in plansdetails track by $index">
+                                                                            <td class="text-center">{{SMS.Validity}}</td>
+                                                                            <td class="text-center">{{SMS.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(SMS.Amount)">Rs.{{SMS.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Local/STD/ISD" ng-click="browseplans('LSC')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="LSC in plansdetails track by $index">
+                                                                            <td class="text-center">{{LSC.Validity}}</td>
+                                                                            <td class="text-center">{{LSC.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(LSC.Amount)">Rs.{{LSC.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                            <uib-tab heading="Other Recharge" ng-click="browseplans('OTR')">
+                                                                <p ng-show="!plansdetails">{{failure}}</p>
+                                                                <table ng-show="plansdetails" class="table table-condensed table-bordered table-striped cf no-margin">
+                                                                    <thead class="cf">
+                                                                        <tr>
+                                                                            <th class="text-center">Validity</th>
+                                                                            <th class="text-center">Detail</th>
+                                                                            <th class="text-center">Amount</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="Other in plansdetails track by $index">
+                                                                            <td class="text-center">{{Other.Validity}}</td>
+                                                                            <td class="text-center">{{Other.Detail}}</td>
+                                                                            <td class="text-center">
+                                                                                <button type="button" class="btn btn-md btn-primary" ng-click="priceChange(Other.Amount)">Rs.{{Other.Amount}}</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </uib-tab>
+                                                        </uib-tabset>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="tab2">
+                                    <md-tab-label>Special</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="SpecialRecharge()" name="SpecialForm">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Phone Number</label><input type="tel" class="form-control" placeholder="Enter mobile no." ng-model="SpecialRechargeModel.phnumber" name="Smobileno" ng-maxlength="10" ng-minlength="10" ng-pattern="/^\d{10}$/" required>
+                                                            <span class="error-message" ng-show="SpecialForm.Smobileno.$dirty
+                    && SpecialForm.Smobileno.$error.pattern" style="color: red">The phone number should be of 10 digits</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Select Operator</label>
+                                                            <select class="form-control" ng-model="SpecialRechargeModel.operator" name="Soperator" required style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="AIRCEL stv">AIRCEL stv</option>
+                                                                <option value="AIRTEL stv">AIRTEL stv</option>
+                                                                <option value="BSNL stv">BSNL stv</option>
+                                                                <option value="IDEA stv">IDEA stv</option>
+                                                                <option value="RELIANCE stv">RELIANCE stv</option>
+                                                                <option value="TATA DOCOMO stv">TATA DOCOMO stv</option>
+                                                                <option value="TELENOR stv">TELENOR stv</option>
+                                                                <option value="VODAFONE stv">VODAFONE stv</option>
+                                                                <option value="T24(Special)">T24(Special)</option>
+                                                                <option value="BSNL VALIDITY">BSNL VALIDITY</option>
+                                                                <option value="MTNL Validity">MTNL Validity</option>
+                                                                <option value="VIRGIN GSM SPECIAL">VIRGIN GSM SPECIAL</option>
+                                                                <option value="VIDEOCON SPECIAL">VIDEOCON SPECIAL</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="SpecialForm.Soperator.$dirty
+                        && SpecialForm.Soperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Amount</label><input type="number" class="form-control" step="0.01" placeholder="Enter Amount" ng-model="SpecialRechargeModel.amount" name="Samount" required min="1" ng-pattern="/^[1-9][0-9]*$/">
+                                                            <span class="error-message" ng-show="SpecialForm.Samount.$dirty
+                    && SpecialForm.Samount.$error.required" style="color: red">Please Enter Amount</span>
+                                                            <span class="error-message" ng-show="SpecialForm.Samount.$dirty
+                    && SpecialForm.Samount.$error.pattern" style="color: red">Please Enter Amount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center" style="margin-top: 2%">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit11(SpecialForm)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="tab3">
+                                    <md-tab-label>Dth</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="DthRecharge()" name="DthForm">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Customer ID</label><input type="text" class="form-control" placeholder="Enter Customer ID" ng-model="DthRechargeModel.customerid" name="DcustomerId" required ng-pattern="/^[0-9]+\b$/">
+                                                            <span class="error-message" ng-show="DthForm.DcustomerId.$dirty
+                      && DthForm.DcustomerId.$error.required" style="color: red">Please Enter Customer ID</span>
+                                                            <span class="error-message" ng-show="DthForm.DcustomerId.$dirty
+                    && DthForm.DcustomerId.$error.pattern" style="color: red">Please Enter Customer ID</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Select Operator</label>
+                                                            <select class="form-control" ng-model="DthRechargeModel.operator" name="Doperator" required style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="BIGTV DTH">BIGTV DTH</option>
+                                                                <option value="AIRTEL DTH">AIRTEL DTH</option>
+                                                                <option value="TATASKY DTH">TATASKY DTH</option>
+                                                                <option value="SUN DIRECT DTH">SUN DIRECT DTH</option>
+                                                                <option value="VIDEOCON DTH">VIDEOCON DTH</option>
+                                                                <option value="DISH TV DTH">DISH TV DTH</option>
+                                                                <option value="TATASKY B2B DTH">TATASKY B2B DTH</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="DthForm.Doperator.$dirty
+                  && DthForm.Doperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Amount</label><input type="number" class="form-control" step="0.01" placeholder="Enter Amount" ng-model="DthRechargeModel.amount" name="Damount" required min="1" ng-pattern="/^[1-9][0-9]*$/">
+                                                            <span class="error-message" ng-show="DthForm.Damount.$dirty
+                  && DthForm.Damount.$error.required" style="color: red">Please Enter Amount</span>
+                                                            <span class="error-message" ng-show="DthForm.Damount.$dirty
+                  && DthForm.Damount.$error.pattern" style="color: red">Please Enter Amount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center" style="margin-top: 2%">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit1(DthForm)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="tab4">
+                                    <md-tab-label>DataCard</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="DataCardRecharge()" name="DataCard">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>DataCard Number</label><input type="tel" class="form-control" placeholder="Enter DataCard No." ng-model="DataCardRechargeModel.datacardno" name="DCnumber" ng-pattern="/^[0-9]+\b$/" maxlength="10" required>
+                                                            <span class="error-message" ng-show="DataCard.DCnumber.$dirty
+                  && DataCard.DCnumber.$error.required" style="color: red">Please Enter DataCard Number</span>
+                                                            <span class="error-message" ng-show="DataCard.DCnumber.$dirty
+                  && DataCard.DCnumber.$error.pattern" style="color: red">Please Enter DataCard Number</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Select Operator</label>
+                                                            <select ng-model="DataCardRechargeModel.operator" name="DCoperator" class="form-control" required style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="VODAFONE DATACARD">VODAFONE DATACARD</option>
+                                                                <option value="Airtel DATACARD">Airtel DATACARD</option>
+                                                                <option value="TATA PHOTON PLUS DATACARD">TATA PHOTON PLUS DATACARD</option>
+                                                                <option value="RELIANCE DATACARD">RELIANCE DATACARD</option>
+                                                                <option value="RELIANCE BROADBAND DATACARD">RELIANCE BROADBAND DATACARD</option>
+                                                                <option value="MTS DATACARD">MTS DATACARD</option>
+                                                                <option value="BSNL DATACARD">BSNL DATACARD</option>
+                                                                <option value="MTNL MUMBAI DATACARD">MTNL MUMBAI DATACARD</option>
+                                                                <option value="IDEA DATACARD">IDEA DATACARD</option>
+                                                                <option value="TataIndicom DATACARD">TataIndicom DATACARD</option>
+                                                                <option value="TATADocomo DATACARD">TATADocomo DATACARD</option>
+                                                                <option value="AIRCEL DATACARD">AIRCEL DATACARD</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="DataCard.DCoperator.$dirty
+                && DataCard.DCoperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Amount</label><input type="number" class="form-control" step="0.01" placeholder="Enter Amount" ng-model="DataCardRechargeModel.amount" name="DCamount" ng-pattern="/^[1-9][0-9]*$/" required min="1">
+                                                            <span class="error-message" ng-show="DataCard.DCamount.$dirty
+                && DataCard.DCamount.$error.required" style="color: red">Please Enter Amount</span>
+                                                            <span class="error-message" ng-show="DataCard.DCamount.$dirty
+                && DataCard.DCamount.$error.pattern" style="color: red">Please Enter Exact Amount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center" style="margin-top: 2%">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit2(DataCard)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="tab5">
+                                    <md-tab-label>PostPaid</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="Postpaid_Recharge()" name="PostPaid">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Phone Number</label><input type="tel" class="form-control" placeholder="Enter Mobile No." ng-model="PostPaidRechargeModel.phnumber" name="postpaidnumber" ng-pattern="/^\d{10}$/" required>
+                                                            <span class="error-message" ng-show="PostPaid.postpaidnumber.$dirty
+                && PostPaid.postpaidnumber.$error.required" style="color: red">Please Enter Phone Number</span>
+                                                            <span class="error-message" ng-show="PostPaid.postpaidnumber.$dirty
+              && PostPaid.postpaidnumber.$error.pattern" style="color: red">Please Enter Valid Phone Number</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" ng-init="addfield=false">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Select Operator</label>
+                                                            <select ng-model="PostPaidRechargeModel.operator" class="form-control" name="postpaidoperator" required style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Operator</option>
+                                                                <option value="AIRCEL POSTPAID">AIRCEL POSTPAID</option>
+                                                                <option value="BSNL POSTPAID">BSNL MOBILE POSTPAID</option>
+                                                                <option value="IDEA POSTPAID">IDEA POSTPAID</option>
+                                                                <option value="RELIANCE POSTPAID">RELIANCE POSTPAID</option>
+                                                                <option value="TATA DOCOMO POSTPAID">TATA DOCOMO POSTPAID</option>
+                                                                <option value="VODAFONE POSTPAID">VODAFONE POSTPAID</option>
+                                                                <option value="AIRTEL POSTPAID">AIRTEL POSTPAID</option>
+                                                                <option value="RELIANCE CDMA POSTPAID">RELIANCE CDMA POSTPAID</option>
+                                                                <option value="TATA INDICOM LANDLINE">TATA INDICOME POSTPAID</option>
+                                                                <option value="LOOP POSTPAID">LOOP POSTPAID</option>
+                                                                <option value="BSNL LANDLINE">BSNL LANDLINE</option>
+                                                                <option value="AIRTEL BROADBAND(DSL)">AIRTEL BROADBAND(DSL)</option>
+                                                                <option value="AIRTEL LANDLINE">AIRTEL LANDLINE</option>
+                                                                <option value="IDEA LANDLINE">IDEA LANDLINE</option>
+                                                                <option value="MTS POSTPAID">MTS POSTPAID</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="PostPaid.postpaidoperator.$dirty
+            && PostPaid.postpaidoperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                        <div class="form-group internal">
+                                                            <div class="col-xs-12" ng-show="addfield">
+                                                                <label>Select Circle</label>
+                                                                <select class="form-control" ng-model="PostPaidRechargeModel.circle" name="circle" style="font-weight: bold; font-size: 102%" ng-required="addfield">
+                                                                    <option value="">Select Operator Circle</option>
+                                                                    <option value="AndamanNicrobar">Andaman Nicrobar</option>
+                                                                    <option value="AndhraPradesh">AndhraPradesh</option>
+                                                                    <option value="ArunachalPradesh">Arunachal Pradesh</option>
+                                                                    <option value="Assam">Assam</option>
+                                                                    <option value="Bangalore">Bangalore</option>
+                                                                    <option value="Bihar">Bihar</option>
+                                                                    <option value="Chennai">Chennai</option>
+                                                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                                                    <option value="DadraandNagarHaveli">Dadraand NagarHaveli</option>
+                                                                    <option value="DamanandDiu">Damanand Diu</option>
+                                                                    <option value="Delhi">Delhi</option>
+                                                                    <option value="Goa">Goa</option>
+                                                                    <option value="Gujarat">Gujarat</option>
+                                                                    <option value="Haryana">Haryana</option>
+                                                                    <option value="HimachalPradesh">HimachalPradesh</option>
+                                                                    <option value="JammuAndKashmir">Jammu And Kashmir</option>
+                                                                    <option value="Jharkhand">Jharkhand</option>
+                                                                    <option value="Karnataka">Karnataka</option>
+                                                                    <option value="Kerala">Kerala</option>
+                                                                    <option value="Kolkata">Kolkata</option>
+                                                                    <option value="MadhyaPradesh">Madhya Pradesh</option>
+                                                                    <option value="Maharashtra">Maharashtra</option>
+                                                                    <option value="Manipur">Manipur</option>
+                                                                    <option value="Meghalaya">Meghalaya</option>
+                                                                    <option value="Mizoram">Mizoram</option>
+                                                                    <option value="Mumbai">Mumbai</option>
+                                                                    <option value="Nagaland">Nagaland</option>
+                                                                    <option value="Orissa">Orissa</option>
+                                                                    <option value="Pondicherry">Pondicherry</option>
+                                                                    <option value="Punjab">Punjab</option>
+                                                                    <option value="Rajasthan">Rajasthan</option>
+                                                                    <option value="Sikkim">Sikkim</option>
+                                                                    <option value="TamilNadu">TamilNadu</option>
+                                                                    <option value="Tripura">Tripura</option>
+                                                                    <option value="Uttar Pradesh East">Uttar Pradesh East</option>
+                                                                    <option value="Uttar Pradesh West">Uttar Pradesh West</option>
+                                                                    <option value="Uttrakhand">Uttrakhand</option>
+                                                                    <option value="West Bengal">West Bengal</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group internal">
+                                                            <div class="col-xs-12" ng-show="addfield">
+                                                                <label>Std Code</label><input type="text" class="form-control" placeholder="Enter Std Code" ng-model="PostPaidRechargeModel.stdCode" name="stdnumber" ng-pattern="/^[0-9]+\b$/" ng-required="addfield"></div>
+                                                        </div>
+                                                        <div class="form-group internal">
+                                                            <div class="col-xs-12" ng-show="addfield">
+                                                                <label>Account No.</label><input type="text" class="form-control" placeholder="Enter Account No" ng-model="PostPaidRechargeModel.accountNo" name="accnumber" ng-pattern="/^[0-9]+\b$/" ng-required="addfield"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Amount</label><input type="number" class="form-control" step="0.01" placeholder="Enter Amount" ng-model="PostPaidRechargeModel.billamount" name="postpaidamount" ng-pattern="/^[1-9][0-9]*$/" required min="1">
+                                                            <span class="error-message" ng-show="PostPaid.postpaidamount.$dirty
+          && PostPaid.postpaidamount.$error.required" style="color: red">Please Enter Bill Amount</span>
+                                                            <span class="error-message" ng-show="PostPaid.postpaidamount.$dirty
+          && PostPaid.postpaidamount.$error.pattern" style="color: red">Please Enter Exact Bill Amount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-center" style="margin-top: 2%">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit3(PostPaid)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                                <md-tab id="tab6">
+                                    <md-tab-label>Utility</md-tab-label>
+                                    <md-tab-body>
+                                        <div class="divider"></div><br>
+                                        <form ng-submit="Utility_billpay()" name="Utility">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>Please Choose Type</label>
+                                                            <select ng-model="UtilitybillModel.operator" class="form-control" name="utilityoperator" required style="font-weight: bold; font-size: 102%">
+                                                                <option value="">{{placeholderOperator}}</option>
+                                                                <option value="MTNL Delhi LandLine Utility">MTNL Delhi Landline</option>
+                                                                <option value="BSNL Landline Utility">BSNL Landline</option>
+                                                                <option value="Reliance Energy(Mumbai) Utility">Reliance Energy (Mumbai)</option>
+                                                                <option value="MSEDC Limited Utility">MSEDC Limited</option>
+                                                                <option value="Torrent Power Utility">Torrent Power</option>
+                                                                <option value="Mahanagar Gas Limited Utility">Mahanagar Gas Limited</option>
+                                                                <option value="Tata AIG Life Utility">Tata AIG Life</option>
+                                                                <option value="ICICI Pru Life Utility">ICICI Pru Life</option>
+                                                                <option value="BSES Rajdhani">BSES Rajdhani</option>
+                                                                <option value="BSES Yamuna">BSES Yamuna</option>
+                                                                <option value="North Delhi Power Limited">North Delhi Power Limited</option>
+                                                                <option value="Brihan Mumbai Electric Supply and Transport Undertaking">Brihan Mumbai Electric Supply and Transport Undertaking BILL</option>
+                                                                <option value="Rajasthan Vidyut Vitran Nigam Limited">Rajasthan Vidyut Vitran Nigam Limited</option>
+                                                                <option value="Soouthern power Distribution Company Ltd of Andhra Pradesh( APSPDCL)">Southern power Distribution Company Ltd of Andhra Pradesh( APSPDCL)</option>
+                                                                <option value="Bangalore Electricity Supply Company">Bangalore Electricity Supply Company</option>
+                                                                <option value="Madhya Pradesh Madhya Kshetra Vidyut Vitaran Company Limited - Bhopal">Madhya Pradesh Madhya Kshetra Vidyut Vitaran Company Limited - Bhopal</option>
+                                                                <option value="Noida Power Company Limited">Noida Power Company Limited</option>
+                                                                <option value="Madhya Pradesh Paschim Kshetra Vidyut Vitaran Indor">Madhya Pradesh Paschim Kshetra Vidyut Vitaran Indor</option>
+                                                                <option value="Calcutta Electricity Supply Ltd">Calcutta Electricity Supply Ltd</option>
+                                                                <option value="Chhattisgarh State Electricity Board">Chhattisgarh State Electricity Board</option>
+                                                                <option value="India Power Corporation Limited">India Power Corporation Limited</option>
+                                                                <option value="Jamshedpur Utilities and Services Company Limited">Jamshedpur Utilities and Services Company Limited</option>
+                                                                <option value="IGL (Indraprast Gas Limited)">IGL (Indraprast Gas Limited)</option>
+                                                                <option value="Gujarat Gas company Limited">Gujarat Gas company Limited</option>
+                                                                <option value="ADANI GAS">ADANI GAS</option>
+                                                                <option value="Tikona Postpaid">Tikona Postpaid</option>
+                                                            </select>
+                                                            <span class="error-message" ng-show="Utility.utilityoperator.$dirty
+                && Utility.utilityoperator.$error.required" style="color: red">Please Choose Operator</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>{{placeholderPhone}}</label><input type="text" class="form-control" placeholder="{{placeholderPhone}}" ng-model="UtilitybillModel.phnumber" name="utilitynumber" ng-pattern="/^[0-9]+\b$/" required>
+                                                            <span class="error-message" ng-show="Utility.utilitynumber.$dirty
+                  && Utility.utilitynumber.$error.required" style="color: red">Enter Correct
+                                                                {{placeholderPhone}}.</span>
+                                                            <span class="error-message" ng-show="Utility.utilitynumber.$dirty
+                  && Utility.utilitynumber.$error.pattern" style="color: red">Enter Correct
+                                                                {{placeholderPhone}}.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>{{placeholderAmount}}</label><input type="number" class="form-control" placeholder="{{placeholderAmount}}" ng-model="UtilitybillModel.billamount" name="utilityamount" ng-pattern="/^[1-9][0-9]*$/" ng-required="submitFlag" min="1">
+                                                            <span class="error-message" ng-show="Utility.utilityamount.$dirty
+          && Utility.utilityamount.$error.required" style="color: red">Please Enter Bill Amount</span>
+                                                            <span class="error-message" ng-show="Utility.utilityamount.$dirty
+          && Utility.utilityamount.$error.pattern" style="color: red">Please Enter Exact Bill Amount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2" ng-hide="submitFlag">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button ng-click="FetchBillAmount()" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit6(Utility)">Fetch Bill Amount</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3" ng-show="AccoutField">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>{{placeholderAccount}}</label><input type="text" class="form-control" placeholder="{{placeholderAccount}}" ng-model="UtilitybillModel.accountNo" name="utilityaccountno" ng-required="AccoutField">
+                                                            <span class="error-message" ng-show="Utility.utilityaccountno.$dirty
+                  && Utility.utilityaccountno.$error.required" style="color: red">Enter Correct
+                                                                {{placeholderAccount}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" ng-show="AuthField && !BauthField">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>{{placeholderService}}</label><input type="text" class="form-control" placeholder="{{placeholderService}}" ng-model="UtilitybillModel.auth" name="authno" ng-pattern="/^[0-9]{2}$/" ng-required="AuthField">
+                                                            <span class="error-message" ng-show="Utility.authno.$dirty
+                  && Utility.authno.$error.required" style="color: red">Enter Correct Auth No.</span>
+                                                            <span class="error-message" ng-show="Utility.authno.$dirty
+                  && Utility.authno.$error.pattern" style="color: red">Enter Correct Auth No.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" ng-show="BauthField && !AuthField">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label>{{placeholderService}}</label>
+                                                            <select ng-model="UtilitybillModel.Bauth" class="form-control" name="utilityoperator" ng-required="BauthField" style="font-weight: bold; font-size: 102%">
+                                                                <option value="">Choose Type</option>
+                                                                <option value="LLI">Landline Individual</option>
+                                                                <option value="LLC">Landline Corporate</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2" ng-show="submitFlag">
+                                                    <div class="form-group row">
+                                                        <div class="col-xs-12">
+                                                            <label class="hidden-xs">&nbsp;</label>
+                                                            <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="!canSubmit6(Utility)||datafetch">Submit</md-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </md-tab-body>
+                                </md-tab>
+                            </md-tabs>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

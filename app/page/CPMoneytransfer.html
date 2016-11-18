@@ -1,0 +1,290 @@
+<div class="page" ng-controller="CpmtSenderController">
+    <div class="row ui-section">
+        <div class="col-md-12">
+            <md-button class="pull-right md-raised btn-w-md md-info">
+                <a class="tabcolor" href="#/cpmttransaction">Re-Initiate Failed Transaction</a>
+            </md-button>
+        </div>
+        <div class="row center-block">
+            <div class="col-md-4 col-xsm-12">
+                <div class="card bg-white pricing-table pricing-table-primary">
+                    <md-progress-linear md-mode="indeterminate" ng-show="ProgressbarFlag"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <ul class="nav nav-tabs nav-justified">
+                            <div class="col-xs-6 btn" ng-class="{'btn-info':register}">
+                                <li ng-click="login = false;register=true;home=false;ResetFormField();">
+                                    <i class="zmdi zmdi-account-add"></i>Register</li>
+                            </div>
+                            <div class="col-xs-6 btn" ng-class="{'btn-info':login}">
+                                <li ng-click="login = true;register=false;home=false;">
+                                    <i class="zmdi zmdi-sign-in"></i>
+                                    Login</li>
+                            </div>
+                        </ul>
+                        <div class="container-fluid"><br>
+                            <div ng-show="login">
+                                <form role="form" name="LoginForm" ng-submit="ValidePhoneChecker()">
+                                    <fieldset>
+                                        <div class="form-group"><input type="text" class="form-control" name="customerphno" placeholder="Phone Number" ng-model="loginmodel.phone" maxlength="10" ng-pattern="/^[789]\d{9}$/" required>
+                                            <span class="error-message" ng-show="LoginForm.customerphno.$dirty
+												&& LoginForm.customerphno.$error.required" style="color: red">Enter Phone No.</span>
+                                            <span class="error-message" ng-show="LoginForm.customerphno.$dirty
+												&& LoginForm.customerphno.$error.pattern" style="color: red">Enter Correct Phone No.</span>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary center-block" ng-disabled="submitbuttonflag || !LoginForm.$valid ">Submit</button>
+                                    </fieldset><br>
+                                    <div ng-show="BalanceFlag">
+                                        <pre style="border-radius: 0px; background-color: #003366; font-weight: 600; color: #fff; outline: none"> Rs {{beneBalance}}/-</pre>
+                                    </div>
+                                </form>
+                            </div>
+                            <div ng-show="register">
+                                <form role="form" name="signupForm" ng-submit="NewRegistration()">
+                                    <fieldset>
+                                        <div class="form-group"><input type="text" class="form-control" name="firstname" placeholder="First Name" maxlength="30" ng-model="Registermodel.firstname" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                            <span class="error-message" ng-show="signupForm.firstname.$dirty
+												&& signupForm.firstname.$error.required" style="color: red">Enter First Name</span>
+                                            <span class="error-message" ng-show="signupForm.firstname.$dirty
+												&& signupForm.firstname.$error.pattern" style="color: red">Enter Proper First Name</span>
+                                        </div>
+                                        <div class="form-group"><input type="text" class="form-control" name="lastname" placeholder="Last Name" maxlength="30" ng-model="Registermodel.lastname" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                            <span class="error-message" ng-show="signupForm.lastname.$dirty
+												&& signupForm.lastname.$error.required" style="color: red">Enter Last Name</span>
+                                            <span class="error-message" ng-show="signupForm.lastname.$dirty
+												&& signupForm.lastname.$error.pattern" style="color: red">Enter Proper Last Name</span>
+                                        </div>
+                                        <div class="form-group"><input type="text" class="form-control" name="Newcustomerphno" placeholder="Phone Number" maxlength="10" ng-model="Registermodel.mobileno" ng-pattern="/^\d{10}$/" required>
+                                            <span class="error-message" ng-show="signupForm.Newcustomerphno.$dirty
+												&& signupForm.Newcustomerphno.$error.pattern" style="color: red">Enter Mobile Number</span>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary center-block" ng-disabled="!signupForm.$valid">Registration</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div ng-hide="register || login || home">
+                                <form role="form" name="retailform" ng-submit="OTPsubmit()"><input type="text" class="form-control" name="otp" placeholder="OTP" maxlength="6" ng-model="otpmodel.otp" required><br>
+                                    <fieldset>
+                                        <button type="submit" class="btn btn-primary center-block">Submit</button>
+                                    </fieldset>
+                                    <fieldset>
+                                        <a href="" ng-click="ResendOTP()">Resend</a>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xsm-12">
+                <div class="card bg-white pricing-table pricing-table-primary">
+                    <md-progress-linear md-mode="indeterminate" ng-show="ProgressbarFlag1"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <ul class="nav nav-tabs nav-justified">
+                            <div class="col-xs-6 btn" ng-class="{'btn-info':addbeneFlag || addbeneOtc}">
+                                <li ng-click="AddNewBene()" title="Add New Beneficiary">AddBene</li>
+                            </div>
+                            <div class="col-xs-6 btn" ng-class="{'btn-info':recipentlistFlag}">
+                                <li ng-click="RecipentList()" title="Recipent List">Recipent</li>
+                            </div>
+                        </ul>
+                        <div class="container-fluid"><br>
+                            <div ng-show="addbeneFlag && !addbeneOtc">
+                                <form role="form" name="Addbeneform" ng-submit="AddBene()">
+                                    <fieldset>
+                                        <div class="form-group"><input type="text" class="form-control" name="benename" placeholder="Bene Name" ng-model="AddBeneModel.benename" maxlength="30" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                            <span class="error-message" ng-show="Addbeneform.benename.$dirty
+												&& Addbeneform.benename.$error.pattern" style="color: red">Enter Proper Bene Name</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" name="type" ng-model="AddBeneModel.benetype" required>
+                                                <option value="">Bene Type</option>
+                                                <option value="NEFT">NEFT</option>
+                                                <option value="IMPS">IMPS</option>
+                                            </select>
+                                            <span class="error-message" ng-show="Addbeneform.type.$dirty
+												&& Addbeneform.type.$error.required" style="color: red">Enter Bene Type</span>
+                                        </div>
+                                        <div class="form-group"><input class="form-control" type="text" placeholder="Account No" name="accountno" data-ng-model="AddBeneModel.accountno" ng-pattern="/^([1-9]|[0-9]*)$/" ng-maxlength="26" required>
+                                            <span class="error-message" ng-show="Addbeneform.accountno.$dirty
+												&& Addbeneform.accountno.$error.pattern" style="color: red">Enter Correct Account No.</span>
+                                        </div>
+                                        <div class="form-group"><input class="form-control" placeholder="IFSC Code" type="text" name="ifsc" data-ng-model="AddBeneModel.ifsc" required>
+                                            <span class="error-message" ng-show="Addbeneform.ifsc.$dirty
+												&& Addbeneform.ifsc.$error.required" style="color: red">Enter IFSC Code.</span>
+                                            <a class="pull-right btn btn-info btn-xs" style="margin-top:5%" ng-click="IFSCCodeFinder()">
+                                                <span>Find IFSC Code</span>
+                                            </a><br></div><br>
+                                        <button type="submit" class="btn btn-primary center-block" ng-disabled="!Addbeneform.$valid">AddBene</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div ng-show="addbeneOtc">
+                                <form role="form" name="retailform" ng-submit="AddbeneOTPsubmit()"><input type="text" class="form-control" name="otp" placeholder="OTP" maxlength="6" ng-model="Addbeneotpmodel.otp" required><br>
+                                    <fieldset>
+                                        <button type="submit" class="btn btn-primary center-block">Submit</button>
+                                    </fieldset>
+                                    <fieldset>
+                                        <a href="" ng-click="AddBeneResendOTP()">Resend</a>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="panel panel-default" ng-show="recipentlistFlag">
+                                <div class="panel-heading" ng-show="!selectedbeneFlag"><input type="text" class="form-control" placeholder="Search Recipient" ng-model="searchrecipient"></div>
+                                <div class="panel-heading" ng-show="selectedbeneFlag" ng-click="selectedbeneFlag=!selectedbeneFlag;transferFlag = !transferFlag">{{selectedBene}}</div>
+                                <div class="panel-body no-padding" ng-show="!selectedbeneFlag">
+                                    <div ng-show="recipentlistFlag && RecipentListForm">
+                                        <md-content style="height: 300px">
+                                            <section ng-show="recipentlistFlag && RecipentListForm">
+                                                <md-subheader class="md-primary">Recipient List</md-subheader>
+                                                <md-list layout-padding="">
+                                                    <md-list-item class="md-3-line" ng-repeat="bene in Benelist.Beneficiary | toArray | filter: searchrecipient">
+                                                        <div class="md-list-item-text" ng-click="SelectedBene(bene)">
+                                                            <h3>{{bene.BeneficiaryName}}</h3>
+                                                            <h4>{{bene.IFSC}}</h4>
+                                                            <p>{{bene.AccountNumber}}</p><hr></div>
+                                                        <i class="zmdi zmdi-delete" tooltip-placement="right" uib-tooltip="Delete Bene" tooltip-append-to-body="true" style="font-size: 130%;padding-top: 10%" ng-click="DeleteSelectedBene(bene)"></i>
+                                                    </md-list-item>
+                                                </md-list>
+                                            </section>
+                                        </md-content>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="selectedbeneFlag">
+                                <a class="pull-center btn btn-info btn-md" tooltip-popup-delay="100" uib-tooltip="Do You Want To Verify Bene..?" tooltip-append-to-body="true" style="margin-top:5%;color:#ffffff;
+										border-radius: 60%" ng-click="verifyBene()">
+                                    <span>Verify Bene ?</span>
+                                </a>
+                            </div>
+                            <div ng-show="deleteBeneFlag">
+                                <form role="form" name="retailform" ng-submit="DeleteBeneOTPsubmit()"><input type="text" class="form-control" name="otp" placeholder="OTP" maxlength="6" ng-model="Deletebeneotpmodel.otp" required><br>
+                                    <fieldset>
+                                        <button type="submit" class="btn btn-primary center-block">Submit</button>
+                                    </fieldset>
+                                    <fieldset>
+                                        <a href="" ng-click="DeleteBeneResendOTP()">Resend</a>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xsm-12">
+                <div class="card bg-white pricing-table pricing-table-primary">
+                    <md-progress-linear md-mode="indeterminate" ng-show="ProgressbarFlag2"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <ul class="nav nav-tabs nav-justified">
+                            <div class="col-xs-12 btn" ng-class="{'btn-info':transferFlag}">
+                                <li title="Fund Transfer">Fund Transfer</li>
+                            </div>
+                        </ul>
+                        <div class="container-fluid" ng-show="transferFlag"><br>
+                            <form role="form" name="Transferform" ng-submit="Fundtransfer()">
+                                <fieldset>
+                                    <div class="form-group"><input type="text" class="form-control" name="amount" placeholder="Enter Amount" ng-model="FundTransfermodel.amount" ng-disabled="reinitializeFlag" required>
+                                        <span class="error-message" ng-show="Transferform.amount.$dirty
+													&& Transferform.amount.$error.required" style="color: red">Enter Correct Amount</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" name="type" ng-model="FundTransfermodel.transfertype" ng-disabled="reinitializeFlag" required>
+                                            <option value="">Transfer Type</option>
+                                            <option value="NEFT">NEFT</option>
+                                            <option value="IMPS">IMPS</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary center-block" ng-disabled="!Transferform.$valid || reinitializeFlag">FundTransfer</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="IFSCMODAL.html">
+    <div class="modal-body">
+        <md-progress-linear md-mode="indeterminate" ng-show="ProgressbarFlag1"></md-progress-linear>
+        <section class="panel panel-default">
+            <div class="panel-body padding-xl">
+                <form name="" class="form-horizontal form-validation">
+                    <div class="row">
+                        <label class='control-label col-md-3'>Bank Name</label>
+                        <div class='col-md-6'>
+                            <div class='form-group internal'>
+                                <input type="text" name="bankselector_list" ng-model="bankObj" uib-typeahead="list as list.BANKNAME for list in BankList | filter:$viewValue | limitTo:8" placeholder="Search Bank" typeahead-on-select="BranchDetails(bankObj)" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class='control-label col-md-3'>Branch Name</label>
+                        <div class='col-md-6'>
+                            <div class='form-group internal'>
+                                <input type="text" ng-model="BranchName" uib-typeahead="list as list.branchName for list in BranchList | filter:$viewValue | limitTo:8" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row text-center'>
+                        <md-button class="md-raised btn-w-md md-primary" type="submit" ng-click="ok()">Confirm</md-button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </div>
+    <div class="modal-footer">
+        <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+        <!-- <button ui-wave class="btn btn-flat btn-primary" ng-click="ok()">OK</button> -->
+    </div>
+</script>
+<script type="text/ng-template" id="tabDialog.tmpl.html">
+    <div class="col-md-4 col-xsm-12">
+        <md-dialog aria-label="Select Bene">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h5 class="text-center">Select Bene</h5>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content style="max-width:400px;max-height:350px;">
+
+                <section>
+                    <div class="md-list-item-text" ng-show="selecet" style="height:150px;">
+                        <br>
+                        <br>
+                        <!-- <div layout="row" layout-sm="column" layout-align="space-around">
+      <md-progress-circular md-mode="indeterminate" ng-show="Circularindeterminate"></md-progress-circular>
+      <br>
+      <br>
+    </div> -->
+                        <h3>{{Benename}}</h3>
+                    </div>
+                    <div ng-hide="selecet">
+                        <md-subheader class="md-primary">Recipient List</md-subheader>
+                        <md-list layout-padding="">
+                            <md-list-item class="md-3-line" ng-repeat="bene in Benelist.Beneficiary | toArray | filter: searchrecipient">
+                                <div class=" md-list-item-text" ng-click="Selected(bene)">
+                                    <h3>{{bene.BeneficiaryName}}</h3>
+                                    <h4>{{bene.IFSC}}</h4>
+                                    <p>
+                                        {{bene.AccountNumber}}
+                                    </p>
+                                    <hr>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </section>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button ng-click="answer()" ng-show="selecet">
+                    submit
+                </md-button>
+            </md-dialog-actions>
+        </md-dialog>
+    </script>

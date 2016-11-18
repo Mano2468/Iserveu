@@ -1,0 +1,107 @@
+<div class="page" ng-controller="AddBenecontroller">
+    <div class="row ui-section">
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <md-progress-linear md-mode="indeterminate" ng-show="progressbarflag"></md-progress-linear>
+                <div class="panel-body padding-xl">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="addbene_form" class="form-horizontal form-validation" ng-submit="AddBene()">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Bene Name</label>
+                                    <div class="col-md-10">
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" placeholder="Bene Name" type="text" required name="bname" data-ng-model="AddBenemodel.BeneName" ng-pattern="/^[a-z ,.'-]+$/i">
+                                                <span class="error-message" ng-show="addbene_form.bname.$dirty
+                            && addbene_form.bname.$error.required" style="color: red">Enter Bene Name</span>
+                                                <span class="error-message" ng-show="addbene_form.bname.$dirty
+                            && addbene_form.bname.$error.pattern" style="color: red">Enter Correct Bene Name</span>
+                                            </div>
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding-left:0px">Bene Mobile No.</label>
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" placeholder="Bene Mobile No" type="text" name="bmobile" data-ng-model="AddBenemodel.Benemobile" ng-pattern="/^\d{10}$/" ng-maxlength="10" ng-minlength="10" required>
+                                                <span class="error-message" ng-show="addbene_form.bmobile.$dirty
+                            && addbene_form.bmobile.$error.required" style="color: red">Enter Bene Mobile No.</span>
+                                                <span class="error-message" ng-show="addbene_form.bmobile.$dirty
+                            && addbene_form.bmobile.$error.pattern" style="color: red">Enter Correct Mobile No.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">IFSC Code</label>
+                                    <div class="col-md-10">
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" placeholder="IFSC Code" type="text" name="ifsc" data-ng-model="AddBenemodel.Ifsc" ng-model-options="{ updateOn: 'blur' }" ng-change="validIfsc(addbene_form)" required>
+                                                <span class="error-message" ng-show="addbene_form.ifsc.$dirty
+                            && addbene_form.ifsc.$error.required" style="color: red">Enter IFSC Code.
+                                                </span>
+                                                <span class="error-message" data-ng-show="Ifsceflag
+															" style="color: red">Enter Correct IFSC Code.</span>
+                                            </div>
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding-left:0px">Account No.</label>
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" type="text" placeholder="Account No" name="accountno" data-ng-model="AddBenemodel.Accno" ng-pattern="/^([1-9]|[0-9]*)$/" ng-maxlength="26" required>
+                                                <span class="error-message" ng-show="addbene_form.accountno.$dirty
+                            && addbene_form.accountno.$error.required" style="color: red">Enter Correct Account No.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Branch Name</label>
+                                    <div class="col-md-10">
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" type="text" placeholder="Branch Name" name="branchname" data-ng-model="AddBenemodel.Branch">
+                                                <span class="error-message" ng-show="addbene_form.branchname.$dirty
+                            && addbene_form.branchname.$error.required" style="color: red"></span>
+                                            </div>
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding-left:0px">Bank Name</label>
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" type="text" placeholder="State Name" name="bankName" data-ng-model="AddBenemodel.Bname" required>
+                                                <span class="error-message" ng-show="addbene_form.bankName.$dirty
+                            && addbene_form.bankName.$error.required" style="color: red">Enter Bank Name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">State Name</label>
+                                    <div class="col-md-10">
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" type="text" placeholder="State Name" name="state" data-ng-model="AddBenemodel.State" ng-pattern="/^[a-zA-Z ]*$/">
+                                                <span class="error-message" ng-show="addbene_form.state.$dirty
+                            && addbene_form.state.$error.required" style="color: red">Enter State Name</span>
+                                                <span class="error-message" ng-show="addbene_form.state.$dirty
+                            && addbene_form.state.$error.pattern" style="color: red">Enter Correct State Name</span>
+                                            </div>
+                                        </div>
+                                        <label class="control-label col-md-2" style="padding-left:0px">City Name.</label>
+                                        <div class="col-md-4">
+                                            <div class="form-group internal"><input class="form-control" type="text" placeholder="City" name="city" data-ng-model="AddBenemodel.City" ng-pattern="/^[a-zA-Z ]*$/">
+                                                <span class="error-message" ng-show="addbene_form.city.$dirty
+                            && addbene_form.city.$error.required" style="color: red">Enter City.
+                                                </span>
+                                                <span class="error-message" ng-show="addbene_form.city.$dirty
+                            && addbene_form.city.$error.pattern" style="color: red">Enter Correct City.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-2">
+                                        <md-button type="submit" class="md-raised btn-w-md md-primary pull-right" style="margin-top:20px; margin-right:15%">Submit</md-button>
+                                    </div>
+                                    <div></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

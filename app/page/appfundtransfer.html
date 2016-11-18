@@ -1,0 +1,232 @@
+<div class="page">
+    <!-- du-scroll-container -->
+    <header class="profile-header"></header>
+    <div class="row ui-section">
+        <div class="row center-block">
+            <div class="col-xs-12 col-sm-12 col-md-4" ng-controller="SendController">
+                <div class="card bg-white pricing-table pricing-table-primary" id="Send-ER">
+                    <md-progress-linear md-mode="indeterminate" ng-show="progressbarflag1"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <ul class="nav nav-tabs nav-justified" style="border-bottom: 2px solid #008fa1">
+                            <div class="col-xs-4 btn" ng-class="{'btn-info active tabcolor': refundflag}">
+                                <li title="Start New Session" class="">
+                                    <a href="" class="tabcolor" ng-class="{'activated': refundflag}" ng-click="refundflag=true; regflag = false; newadd = false; enrollflag = false; otpflag = false;">Refund</a>
+                                </li>
+                            </div>
+                            <div class="col-xs-4 btn" ng-class="{'btn-info active tabcolor': regflag && !refundflag}">
+                                <li ng-click="regflag = true; newadd = true; enrollflag = false; otpflag = false; refundflag=false; clearsenderform()" title="Enroll New User">
+                                    <a href="" class="tabcolor" ng-class="{'activated': regflag && !refundflag}" style="padding-bottom: 18%">
+                                        <span class="zmdi zmdi-account-add" style="font-size: 110%"></span>
+                                    </a>
+                                </li>
+                            </div>
+                            <div class="col-xs-4 btn" ng-class="{'btn-info active tabcolor': !regflag && !refundflag}">
+                                <li class="" ng-click="regflag = false; otpflag = false; refundflag=false;" title="Login: Registered User Only">
+                                    <a href="" class="tabcolor" ng-class="{'activated': !regflag && !refundflag}">Login</a>
+                                </li>
+                            </div>
+                        </ul>
+                        <div class="container-fluid"><br>
+                            <form role="form" name="retailform" ng-submit="Refund()" ng-show="refundflag"><input type="text" class="form-control" name="customerphno" placeholder="Transaction ID" maxlength="15" ng-model="transactionmodel.id" required><br><input type="text" class="form-control" name="otp" placeholder="OTP" maxlength="10" ng-model="transactionmodel.otp" required><br>
+                                <fieldset ng-disabled="enrollflag">
+                                    <a href="" ng-click="RefundOtp(transactionmodel.id)">Resend</a>
+                                </fieldset>
+                                <fieldset ng-disabled="(enrollflag && !retailform.$valid)">
+                                    <button type="submit" class="btn btn-info center-block">Submit</button>
+                                </fieldset>
+                            </form>
+                            <form role="form" name="signinForm" novalidate valdr-type="signin">
+                                <fieldset ng-disabled="(regflag && !newadd && !refundflag) || otpflag" ng-hide="refundflag">
+                                    <div class="form-group" valdr-form-group>
+                                        <label for="Existing customer" ng-show="!(signinForm.customerphno.$viewValue == null || signinForm.customerphno.$viewValue.length ===0)">Phone Number</label><input type="tel" class="form-control" name="customerphno" placeholder="Phone Number" maxlength="10" ng-model="senderFormModel.phoneno" autocomplete="tel"></div>
+                                    <div ng-show="limitflag" ng-hide="(regflag || otpflag || refundflag || !limitflag)">
+                                        <pre style="border-radius: 0px; background-color: #f44336; font-weight: 600; color: #fff; outline: none">Remaining Limit &mdash; Rs {{amountRemaining}}/-</pre>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <div ng-show="regflag && !refundflag">
+                                <form role="form" name="signupForm" novalidate valdr-type="signup" ng-submit="SubmitEnroll((signupForm.$valid && signinForm.$valid))">
+                                    <div class="form-group" valdr-form-group>
+                                        <label for="New customer" ng-show="!(signupForm.customername.$viewValue == null || signupForm.customername.$viewValue.length ===0)">Customer Name</label><input type="text" class="form-control" id="customername" name="customername" placeholder="Full Name" maxlength="30" ng-model="senderFormModel.sendername" autocomplete="name"></div>
+                                    <fieldset ng-disabled="enrollflag">
+                                        <button type="submit" class="btn btn-info center-block">Enroll</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div ng-show="otpflag && !regflag && !refundflag">
+                                <form role="form" name="verifyForm" novalidate valdr-type="verify" ng-submit="OtpVerify(verifyForm.$valid)">
+                                    <div class="form-group" valdr-form-group>
+                                        <label for="Enter OTP" ng-show="!(verifyForm.otpPass.$viewValue == null || verifyForm.otpPass.$viewValue.length ===0)">One Time Password</label><input type="text" class="form-control" id="otpPass" name="otpPass" placeholder="OTP Number" maxlength="10" ng-model="senderFormModel.otpnumber" autocomplete="off"></div>
+                                    <a href="" ng-click="ResendOtp((signupForm.$valid && signinForm.$valid))">Resend OTP</a>
+                                    <fieldset ng-disabled="(!verifyForm.$valid)">
+                                        <button type="submit" class="btn center-block" ng-class="{'btn-info': !verifyForm.$dirty ,'btn-success':verifyForm.$valid ,'btn-danger': !verifyForm.$valid}">Verify</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4" ng-controller="RecipientController" id="Reci-PT">
+                <div class="card bg-white pricing-table pricing-table-primary">
+                    <md-progress-linear md-mode="indeterminate" ng-show="progressbarflag2"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <ul class="nav nav-tabs nav-justified" style="border-bottom: 2px solid #008fa1">
+                            <div class="col-xs-6 btn" ng-class="{'btn-info active tabcolor': addflag}">
+                                <li class="" ng-click="addTabClick()" title="Add / Verify New Beneficiary">
+                                    <a href="" class="tabcolor" ng-class="{'activated': addflag}">Add New</a>
+                                </li>
+                            </div>
+                            <div class="col-xs-6 btn" ng-class="{'btn-info active tabcolor': !addflag}">
+                                <li class="" ng-click="recipientClick()" title="Select Existing Beneficiary">
+                                    <a href="" class="tabcolor" ng-class="{'activated': !addflag}">Recipient</a>
+                                </li>
+                            </div>
+                        </ul>
+                        <div class="panel panel-default" style="padding: 2%; margin: 1%; max-height: inherit" ng-show="recipientshowflag">
+                            <div class="panel-heading" ng-click="rlistToggle();">
+                                <label for="recipient info">{{selectedUserName}}</label>
+                            </div>
+                            <table class="table" ng-show="recipientlistFlag && activateform">
+                                <thead>
+                                    <tr>
+                                        <th><input class="headpadd" type="text" style="border: none" id="Searchrecipients" placeholder="Search Recipient" ng-model="searchrecipient"></th>
+                                        <th class="text-primary">
+                                            <i class="fa fa-search headpadd"></i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="maxlistsize">
+                                <table class="table table-hover" ng-show="recipientlistFlag && activateform">
+                                    <tbody>
+                                        <tr ng-repeat="bene in customerdata.data.recipient_list | filter: searchrecipient">
+                                            <td class="md-whiteframe-2dp" ng-click="beneSelected(bene); rlistToggle();" style="border: none">
+                                                <button class="btn-xs center-block" style="background-color: #008fa1; border: none">
+                                                    <span style="color: white">
+                                                        <strong>{{bene.recipient_name}}</strong>
+                                                    </span>
+                                                    <span class="space"></span>
+                                                    <span style="color: white">
+                                                        <strong>{{bene.account}}</strong>
+                                                    </span><br>
+                                                    <span style="color: white">{{bene.bank}}</span>
+                                                </button>
+                                            </td>
+                                            <td class="md-whiteframe-1dp" style="border: none">
+                                                <button class="btn-danger btn center-block btn-xs" ng-click="DeleteBene($index, bene)">Delete</button>
+                                                <button class="btn-success btn center-block btn-xs">Wallet</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><br>
+                        <div class="container-fluid" id="recipient" ng-show="addflag">
+                            <form rol="form" name="BanklistForm">
+                                <div class="form-group"><input type="text" name="bankselector_list" ng-model="bankObj" uib-typeahead="list as list.BANKNAME for list in bankcodelist | filter:$viewValue | limitTo:8" placeholder="Search Bank" typeahead-on-select="BankDetails(bankObj)" class="form-control"></div>
+                            </form>
+                            <form role="form" name="RecipientForm" novalidate valdr-type="beneAddVerify" ng-show="BanklistForm.$valid">
+                                <fieldset ng-disabled="!activateform">
+                                    <div class="form-group" valdr-form-group>
+                                        <label for="optional IFSC" ng-show="!(RecipientForm.ifsc_code.$viewValue == null || RecipientForm.ifsc_code.$viewValue.length === 0)">IFSC Code</label>
+                                        <div class="input-group"><input type="text" class="form-control" id="ifsc_code" name="ifsc_code" placeholder="IFSC Code" ng-model="beneFormModel.ifsc" autocomplete="on">
+                                            <span class="input-group-addon">IFSC</span>
+                                        </div>
+                                        <span class="error-message" ng-show="IfscRequiredFlag" style="color: red">IFSC Required</span><br>
+                                        <a class="pull-right btn btn-info btn-xs" ng-click="IfscCodeFinder(bankObj)">
+                                            <span>Find IFSC Code</span>
+                                        </a>
+                                    </div><br>
+                                    <div class="form-group" valdr-form-group>
+                                        <label for="New Recipient" ng-show="!(RecipientForm.bankaccountno.$viewValue == null || RecipientForm.bankaccountno.$viewValue.length ===0)">Recipents Accno.</label>
+                                        <div class="input-group"><input type="text" class="form-control" id="bankaccountno" name="bankaccountno" placeholder="Account number" ng-model="beneFormModel.accoutno" maxlength="26" autocomplete="on">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-credit-card"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div ng-show="RecipientForm.bankaccountno.$valid" class="form-group" valdr-form-group>
+                                        <label for="Bene Name" ng-show="!(RecipientForm.benename.$viewValue == null || RecipientForm.benename.$viewValue.length ===0)">Beneficiary Name</label>
+                                        <div class="input-group"><input type="text" class="form-control" id="benename" name="benename" placeholder="Beneficiary Name" maxlength="30" ng-model="beneFormModel.benename" autocomplete="on">
+                                            <span class="input-group-addon">
+                                                <i class="zmdi zmdi-account"></i>
+                                            </span>
+                                        </div>
+                                    </div><br>
+                                    <div class="row" ng-show="RecipientForm.bankaccountno.$valid && RecipientForm.benename.$valid" class="form-group">
+                                        <div class="pull-left">
+                                            <button type="button" style="margin-left: 26%" class="btn btn-success center-block" ng-click="PostBene(RecipientForm.$valid && RecipientForm.benename.$modelValue != null)" ng-disabled="!verifyFlag">Verify</button>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button type="button" style="margin-left: -21%" class="btn btn-success center-block" ng-disabled="!addbeneFlag" ng-click="AddBene(RecipientForm.$valid && RecipientForm.benename.$modelValue != null)">AddBene</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4" ng-controller="TransferController">
+                <div class="card bg-white pricing-table pricing-table-primary" id="Trans-FER">
+                    <md-progress-linear md-mode="indeterminate" ng-show="progressbarflag3"></md-progress-linear>
+                    <div class="card-content customheight">
+                        <div id="transfertitle">Transfer Money</div><hr style="border-bottom: 2px solid #008fa1; margin-top: 5%">
+                        <form role="form" name="moneyTransferForm" ng-submit="transferFormSubmit(moneyTransferForm.$valid)" novalidate valdr-type="fundtransfer">
+                            <fieldset ng-hide="notformactivate">
+                                <div class="form-group" valdr-form-group>
+                                    <label for="Amount pay" ng-show="!(moneyTransferForm.transferamount.$viewValue == null || moneyTransferForm.transferamount.$viewValue.length ===0)">Enter Amount</label><input type="text" class="form-control" name="transferamount" placeholder="Enter Amount" ng-model="transferFormModel.amount" autocomplete="off"></div>
+                                <div class="form-group" valdr-form-group>
+                                    <label for="pay Mode" ng-show="!(moneyTransferForm.txmode.$viewValue == null || moneyTransferForm.txmode.$viewValue.length ===0)">Mode of Transfer</label>
+                                    <select class="form-control" name="txmode" ng-model="transferFormModel.transfermode" ng-options=" list.value as list.name for list in ChannelList"></select>
+                                    <div ng-show="messageFlag">
+                                        <h6 style="color: red">IMPS DOWN NOW...</h6>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info center-block" ng-hide="disablepayflag" ng-disabled="progressbarflag3">Pay</button>
+                                    <button type="button" class="btn btn-success center-block" ng-hide="disablequickpayflag" ng-disabled="progressbarflag3" ng-click="QuickPay(moneyTransferForm.$valid)">Quick Pay</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="Ifscmodal.html">
+    <div class="modal-body">
+        <section class="panel panel-default">
+            <div class="panel-body padding-xl">
+                <form name="" class="form-horizontal form-validation">
+                    <div class="row">
+                        <label class='control-label col-md-3'>Bank Name</label>
+                        <div class='col-md-6'>
+                            <div class='form-group internal'>
+                                <input class='form-control' type='text' data-ng-model="BankName" ng-disabled="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class='control-label col-md-3'>Branch Name</label>
+                        <div class='col-md-6'>
+                            <div class='form-group internal'>
+                                <input type="text" ng-model="BranchName" uib-typeahead="list as list.branchName for list in BranchlistArray | filter:$viewValue | limitTo:8" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row text-center'>
+                        <md-button class="md-raised btn-w-md md-primary" type="submit" ng-click="ok()">Confirm</md-button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </div>
+    <div class="modal-footer">
+        <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+        <!-- <button ui-wave class="btn btn-flat btn-primary" ng-click="ok()">OK</button> -->
+    </div>
+</script>

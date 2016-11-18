@@ -1,0 +1,50 @@
+<div class="page" data-ng-controller="UserHierarchyCtrl">
+    <div class="row ui-section">
+         <div class="col-lg-8 clearfix">
+            <h2 class="section-header">User Map</h2>
+        </div>
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <md-progress-linear md-mode="indeterminate" ng-show="mappingflag"></md-progress-linear>
+                <div class="panel-body padding-xl">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <form name="userhierarchyform" ng-submit="MappingData(UserHierarchyModel)">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h4>Admin</h4>
+                                    <div class="form-group internal"><input
+                                        type="text"
+                                        ng-model="UserHierarchyModel.Adminmodel"
+                                        uib-typeahead="Alist as Alist.adminUserName for Alist in AdminList | filter:$viewValue | limitTo:8"
+                                        typeahead-on-select="DRlist(UserHierarchyModel.Adminmodel);"
+                                        class="form-control"
+                                        placeholder="Search Admin"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4>Distributor/Retailer</h4>
+                                    <div class="form-group internal"><input
+                                        type="text"
+                                        ng-model="UserHierarchyModel.DRmodel"
+                                        uib-typeahead="DRlist as DRlist.userName for DRlist in DistributorRetailerList | filter:$viewValue | limitTo:8"
+                                        typeahead-on-select="CheckDR(UserHierarchyModel.DRmodel)"
+                                        class="form-control"
+                                        placeholder="Search Distributor/Retailer"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4>Parent</h4>
+                                    <div class="form-group internal"><input type="text" ng-model="UserHierarchyModel.Pmodel" uib-typeahead="Plist as Plist.userName for Plist in Parentlist | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Parent"></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4>&nbsp;</h4>
+                                    <div class="form-group internal">
+                                        <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="submitFlag">Submit</md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,421 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="column">
+            <section class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="column">
+                            <div class="section-header">
+                                <h4>Settings</h4>
+                            </div>
+                            <div class="ui-tab-container ui-tabs-collapsible ui-tab-horizontal" ng-controller="SettingPageCtrl">
+                                <uib-tabset justified="false" class="ui-tab">
+                                    <uib-tab heading="MYCommission" ng-if="isAdmin() || isRetailer()||isMasterDis()||isDistributor()">
+                                        <div class="panel panel-default" ng-controller="CommissionController">
+                                            <div class="panel-body">
+                                                <div class="divider"></div>
+                                                <form class="form-horizontal form-validation" role="form" name="CommissionForm">
+                                                    <div class="col-md-12 table-responsive">
+                                                        <table class="table table-striped table-condensed table-bordered no-margin">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">Provider Id</th>
+                                                                    <th class="text-center">Provider Code</th>
+                                                                    <th class="text-center">Provider Name</th>
+                                                                    <th class="text-center">Provider Type</th>
+                                                                    <th class="text-center">Flat</th>
+                                                                    <th class="text-center">Txn Type</th>
+                                                                    <th class="text-center">Service Charge</th>
+                                                                    <th class="text-center">Flat</th>
+                                                                    <th class="text-center">Transactional Charge</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="scheme in assignedServiceProviders">
+                                                                    <td class="text-center">{{scheme.scheme.serviceProvider.id}}</td>
+                                                                    <td class="text-center">{{scheme.scheme.serviceProvider.providerCode}}</td>
+                                                                    <td class="text-center">{{scheme.scheme.serviceProvider.providerName}}</td>
+                                                                    <td class="text-center">{{scheme.scheme.serviceProvider.providerType}}</td>
+                                                                    <td class="text-center">{{scheme.flat}}</td>
+                                                                    <td class="text-center">{{scheme.serviceCharge ? "Service Charge" : "Commission"}}</td>
+                                                                    <td class="text-center">{{scheme.active}}</td>
+                                                                    <td class="text-center">{{scheme.transactionalCharge}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="Promotional" ng-if="isAdmin()||isMasterDis()||isDistributor()">
+                                        <div class="panel panel-default" ng-controller="PromotionalController">
+                                            <div class="panel-body">
+                                                <form name="Pfrom" class="form-horizontal form-validation" ng-submit="promotional()">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <textarea class="form-control" placeholder="Promotional Messages" rows="3" ng-maxlength="255" data-ng-model="promotionalModel.comment" name="comment"></textarea>
+                                                                <span class="error-message" ng-show="Pfrom.comment.$error.maxlength" style="color: red">Please give a smaller message.</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row text-center">
+                                                            <md-button type="submit" class="md-raised md-primary btn-w-md" name="button">Update</md-button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h4>SMS OPTIONS</h4>
+                                                        <div class="form-group">
+                                                            <label ng-repeat="list in CheckBoxList" class="checkbox-inline">
+                                                                <md-checkbox value="{{list}}" ng-checked="selection.indexOf(list) > -1" ng-click="toggleSelection(list)">{{list}}</md-checkbox>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="Base Package" ng-if="isAdmin()">
+                                      <!-- ng-click="getTemplate('true')" -->
+                                        <div class="panel panel-default" ng-controller="BasePackageController">
+                                            <md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear>
+                                            <div class="panel-body">
+                                                <div class="table-bordered table-responsive">
+                                                  <br>
+                                                    <div class="row text-right" style="margin-right: 1%">
+                                                        <div class="col-xs-6 col-sm-6 text-left">
+                                                            <label>Select Hierarchy: &shy;</label>
+                                                            <span class="ui-select">
+                                                                <select ng-model="hierarchySelected" ng-options="hierarchyvalue for hierarchyvalue in BasePackageArrayObj.HierachyArray"></select>
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-xs-offset-3 col-xs-3 col-sm-3 text-right" style="margin-top: 1%; overflow: hidden">
+                                                            <span>Show<select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt"></select>entries per page</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="divider"></div>
+                                                    <form class="form-horizontal form-validation" role="form" name="BasePackForm">
+                                                        <table class="table table-striped table-condensed table-bordered no-margin">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-center">Provider Id</th>
+                                                                    <th class="text-center">Provider Name</th>
+                                                                    <th class="text-center">Admin Share</th>
+                                                                    <th class="text-center" ng-hide="hierarchySelected==='ADR'||hierarchySelected==='AR'">Master Share</th>
+                                                                    <th class="text-center" ng-hide="hierarchySelected==='AMR'||hierarchySelected==='AR'">Distributor Share</th>
+                                                                    <th class="text-center">Retailer Share</th>
+                                                                    <th class="text-center">Service Charge</th>
+                                                                    <th class="text-center">Flat</th>
+                                                                    <th class="text-center">
+                                                                        <md-button type="submit" ng-disabled="(updatenotallowed || !BasePackForm.$valid)" class="md-raised btn-w-md md-primary" ng-click="updatebasePack()">Update</md-button>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr class="text-center"  dir-paginate="basepack in basepackList|itemsPerPage:numPerPage"  ng-include="getTemplate(basepack)"></tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                    <script type="text/ng-template" id="display">
+                                                        <td>{{basepack['id']}}</td>
+                                                        <td>{{basepack.serviceProvider.providerName}}</td>
+                                                        <td>{{basepack.adminShare}}</td>
+                                                        <td ng-hide="hierarchySelected==='ADR'||hierarchySelected==='AR'">{{basepack.masterShare}}</td>
+                                                        <td ng-hide="hierarchySelected==='AMR'||hierarchySelected==='AR'">{{basepack.distributorShare}}</td>
+                                                        <td>{{basepack.retailerShare}}</td>
+                                                        <td>{{basepack.serviceTax? 'Yes' : 'No'}}</td>
+                                                        <td>{{basepack.flat? 'Yes' : 'No'}}</td>
+                                                        <td>
+                                                            <button class="md-raised btn-xs md-accent md-button md-ink-ripple" ng-click="editPackageData(basepack)">Edit</button>
+                                                        </td>
+                                                    </script>
+                                                    <script type="text/ng-template" id="edit">
+                                                        <td>{{basepack['id']}}</td>
+                                                        <td>{{basepack.serviceProvider.providerName}}</td>
+                                                        <td ng-init="origtemp.admin = model.adminShare"><input type="text" class="form-control" ng-model="model.adminShare" name="{{'admin-Share' + $index}}" ng-pattern='/^([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/'>
+                                                            <span class="error-message" ng-show="BasePackForm.{{'admin-Share' + $index}}.$dirty && BasePackForm.{{'admin-Share' + $index}}.$error.pattern" style="color:red">
+                                                                only digits and positive numbers
+                                                            </span>
+                                                        </td>
+                                                        <td ng-init="origtemp.master = model.masterShare" ng-hide="hierarchySelected==='ADR'||hierarchySelected==='AR'"><input type="text" class="form-control" ng-model="model.masterShare" ng-pattern='/^([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/' name="{{'master-Share' + $index}}">
+                                                            <span class="error-message" ng-show="BasePackForm.{{'master-Share' + $index}}.$dirty && BasePackForm.{{'master-Share' + $index}}.$error.pattern" style="color:red">
+                                                                only digits and positive numbers
+                                                            </span>
+                                                        </td>
+                                                        <td ng-init="origtemp.dist = model.distributorShare" ng-hide="hierarchySelected==='AMR'||hierarchySelected==='AR'"><input type="text" class="form-control" ng-model="model.distributorShare" ng-pattern='/^([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/' name="{{'dist-Share' + $index}}">
+                                                            <span class="error-message" ng-show="BasePackForm.{{'dist-Share' + $index}}.$dirty && BasePackForm.{{'dist-Share' + $index}}.$error.pattern" style="color:red">
+                                                                only digits and positive numbers
+                                                            </span>
+                                                        </td>
+                                                        <td ng-init="origtemp.retail = model.retailerShare"><input type="text" class="form-control" ng-model="model.retailerShare" ng-pattern='/^([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/' name="{{'retail-Share' + $index}}">
+                                                            <span class="error-message" ng-show="BasePackForm.{{'retail-Share' + $index}}.$dirty && BasePackForm.{{'retail-Share' + $index}}.$error.pattern" style="color:red">
+                                                                only digits and positive numbers
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <!-- <md-select class="ui-select" ng-model="model.serviceTax">
+                                                                    <option value="true">Service Tax</option>
+                                                                    <option value="false">Commission</option>
+                                                                </md-select> -->
+                                                            <md-select ng-model="model.serviceTax" aria-label="select" style="margin-top: 1%">
+                                                                <md-option ng-repeat="typeval in [{taxval: true, name: 'Service Tax'},{taxval: false, name: 'Commission'}]" value="{{typeval.taxval}}">
+                                                                    {{typeval.name}}
+                                                                </md-option>
+                                                            </md-select>
+                                                        </td>
+                                                        <td>
+                                                            <md-checkbox aria-label="Checkbox 1" ng-model="model.flat"></md-checkbox>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-xs btn-info" ng-click="saveContact(basepack, origtemp)" ng-disabled="!checkValidity(model.serviceTax,model.retailerShare,model.distributorShare,model.masterShare,model.adminShare)">Save</button>
+                                                            <button class="btn btn-xs btn-danger" ng-click="reset()">Cancel</button>
+                                                        </td>
+                                                    </script>
+                                                </div>
+                                                <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="Scheme" ng-if="isAdmin()||isMasterDis()">
+                                        <div class="panel panel-default" data-ng-controller="Providercontroller" ng-init="getdirectChildren();">
+                                            <div class="panel-body">
+                                                <md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear>
+                                                <div class="col-lg-12 text-right">
+                                                    <span class="space"></span>
+                                                </div>
+                                                <form class="row" name="SchemeForm" ng-submit="updateScheme(SchemeForm.$valid)">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group row">
+                                                            <label>Select User</label>
+                                                            <div class="ui-typeahead"><input
+                                                                type="text"
+                                                                ng-model="selectedSchemeObj"
+                                                                uib-typeahead="Children as Children.userName for Children in directChildren | filter:$viewValue | limitTo:4"
+                                                                class="form-control"
+                                                                placeholder="Choose User ....."
+                                                                typeahead-editable="false" require="true" typeahead-on-select="getServiceProviders()"></div>
+                                                            <!-- <select selector name="userId" model="selectedSchemeObj" options="directChildren"
+                                                            placeholder="Choose User ....." label-attr="userName" require="true"
+                                                            ng-click="getServiceProviders()"></select> -->
+                                                            <!-- <span class="error-message" ng-show="SchemeForm.userId.$dirty
+                                                && SchemeForm.userId.$error.required" style="color: red">Please select an user</span> -->
+                                                        </div>
+                                                    </div>
+                                                    <br>
+<div class="col-md-12">
+                                                <div class="row table-responsive">
+                                                    <table class="table table-striped table-condensed table-bordered no-margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Id</th>
+                                                                <th class="text-center">Provider Code</th>
+                                                                <th class="text-center">Provider Name</th>
+                                                                <th class="text-center">Provider Type</th>
+                                                                <th class="text-center">Flat</th>
+                                                                <th class="text-center">Transaction Type</th>
+                                                                <th class="text-center">Active</th>
+                                                                <th class="text-center">Own Charge</th>
+                                                                <th class="text-center">Charge</th>
+                                                                <th class="text-center">
+                                                                    <md-button type="submit" class="md-raised btn-w-md md-primary" ng-disabled="noupdateFlag">Update</md-button>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody ng-init="noEditFlag = true">
+                                                            <tr ng-repeat="scheme in assignedServiceProviders">
+                                                                <td class="text-center">{{scheme.scheme.serviceProvider.id}}</td>
+                                                                <td class="text-center">{{scheme.scheme.serviceProvider.providerCode}}</td>
+                                                                <td class="text-center">{{scheme.scheme.serviceProvider.providerName}}</td>
+                                                                <td class="text-center">{{scheme.scheme.serviceProvider.providerType}}</td>
+                                                                <td class="text-center">{{scheme.flat? 'Yes' : 'No'}}</td>
+                                                                <td class="text-center">{{scheme.serviceCharge ? "Service Charge" : "Commission"}}</td>
+                                                                <td class="text-center">
+                                                                    <md-checkbox aria-label="Checkbox 1" ng-disabled="noEditFlag" ng-model="scheme.scheme.active"></md-checkbox>
+                                                                </td>
+                                                                <td class="text-center">{{scheme.transactionalCharge}}</td>
+                                                                <td class="text-center" ng-init="tempPercent = scheme.scheme.percentage"><input class="form-control" placeholder="Enter the percentage" name="{{'percentage' + $index}}" ng-model="scheme.scheme.percentage" ng-pattern="/^([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/" ng-disabled="noEditFlag" required>
+                                                                    <span class="error-message" ng-show="SchemeForm.{{'percentage' + $index}}.$dirty
+                                                    && SchemeForm.{{'percentage' + $index}}.$error.pattern" style="color: red">Please set percentage in<br>1-100 : commission,<br>above 100: service charge.
+                                                                    </span>
+                                                                    <span class="error-message" ng-show="SchemeForm.{{'percentage' + $index}}.$dirty
+                                                && SchemeForm.{{'percentage' + $index}}.$error.required" style="color: red">Please set percentage.</span>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <div class="buttons text-center">
+                                                                        <button ng-show="noEditFlag" type="button" class="btn btn-default" ng-click="noEditFlag = !noEditFlag">Edit</button>
+                                                                        <div ng-show="!noEditFlag">
+                                                                            <button type="button" class="btn btn-primary" ng-click="noEditFlag = true; setUpdateflag(!SchemeForm.$valid)" ng-disabled="CheckValideCharge(scheme.serviceCharge,scheme.transactionalCharge,scheme.scheme.percentage)">Save</button>
+                                                                            <button type="button" class="btn btn-default" ng-click="noEditFlag = true; scheme.scheme.percentage = tempPercent">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                              </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab ng-if="isAdmin()" heading="Check Pending Status">
+                                        <div class="panel panel-default" ng-controller="RefundRequestController">
+                                            <div class="panel-body">
+                                                <md-button class="md-raised btn-w-md md-primary" ng-click="updatepending()">Refund</md-button>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="Recharge Selector" ng-if="isAdmin()||isMasterDis()">
+                                        <div class="panel panel-default" ng-controller="AdminRechargeController">
+                                            <md-progress-linear md-mode="indeterminate" ng-show="rechargeplanflag"></md-progress-linear>
+                                            <br>
+                                            <!-- <div class="col-xs-offset-9 col-sm-offset-9 col-xs-3 col-sm-3 text-right">
+                                                <span>Show<select data-ng-model="Page" data-ng-options="num for num in POption"></select>entries per page</span>
+                                            </div> -->
+                                            <div class="panel-body padding-xl">
+                                              <div class="col-md-10 col-md-offset-1">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-condensed table-bordered no-margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Operator</th>
+                                                                <th class="text-center">API Operator Code</th>
+                                                                <th class="text-center">
+                                                                    <md-button type="submit" class="md-raised btn-w-md md-primary" ng-click="Updateservice(operatorList)" ng-disabled="noupdateFlag">Update</md-button>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody ng-init="noEditFlag = true">
+                                                            <tr ng-repeat="operator in operatorList">
+                                                              <!-- <tr dir-paginate="operator in operatorList|itemsPerPage:Page"> -->
+                                                                <td class="text-center">{{operator.rechargeOperator}}</td>
+                                                                <td class="text-center">
+                                                                    <!-- <select
+                                                                        class="form-control"
+                                                                        ng-model="operator.serviceProvider"
+                                                                        name="ServiceProvider"
+                                                                        ng-disabled="noEditFlag"
+                                                                        ng-options=" ServiceProvider as ServiceProvider.providerName for ServiceProvider in ServiceProviderList track by ServiceProvider.id"
+                                                                        ng-selected="getSelected(operator,ServiceProvider)"
+                                                                        required>
+                                                                        <option value="">Choose Operator</option>
+                                                                    </select> -->
+                                                                    <div class="ui-typeahead" ng-init="temp = operator.serviceProvider"><input
+                                                                        type="text"
+                                                                        ng-model="operator.serviceProvider"
+                                                                        uib-typeahead="ServiceProvider as ServiceProvider.providerName for ServiceProvider in ServiceProviderList | filter:$viewValue | limitTo:8"
+                                                                        class="form-control"
+                                                                        placeholder="Search"
+                                                                        ng-disabled="noEditFlag"
+                                                                        typeahead-editable="false"></div>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <div class="buttons text-center">
+                                                                        <button ng-show="noEditFlag" type="button" class="md-raised btn-xs md-accent md-button md-ink-ripple" ng-click="noEditFlag = !noEditFlag;">Edit</button>
+                                                                        <div ng-show="!noEditFlag">
+                                                                            <button type="button btn-xs" class="btn btn-md btn-info" ng-click="noEditFlag = true;setUpdateflag(false)">Save</button>
+                                                                            <button type="button btn-xs" class="btn btn-md btn-danger" ng-click="noEditFlag = true; operator.serviceProvider = temp">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true"></dir-pagination-controls> -->
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="API Settings" ng-if="isAdmin()">
+                                        <div class="panel panel-default" ng-controller="SMSApiController">
+                                            <md-progress-linear md-mode="indeterminate" ng-show="smsapiflag"></md-progress-linear>
+                                            <div class="panel-body">
+                                                <form name="smsform" class="form-horizontal form-validation">
+                                                    <div class="form-group">
+                                                        <div class="col-lg-8 col-lg-offset-2">
+                                                            <div class="callout callout-success">
+                                                                <span>
+                                                                    <h5>NOTE: SMS API SHOULD LOOK LIKE THIS:</h5>
+                                                                    <h6>http://domain.com/api/sendhttp.php?authkey=9777777ACFCF&route=4&sender=ABCDEF&mobiles=<b>MOBN</b>&message=<b>MSGN</b>
+                                                                    </h6>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-init="urlEditFlag=true">
+                                                        <label class="control-label col-md-2 col-md-offset-1">SMS URL</label>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="col-md-11">
+                                                                    <textarea class="form-control" placeholder="Enter URL" rows="2" ng-disabled="urlEditFlag" type="url" pattern="https?://.+" data-ng-model="smsurlModel.sms" name="sms" ng-init="tempurl = smsurlModel.sms" required></textarea>
+                                                                    <span class="error-message" ng-show="smsform.sms.$dirty&&smsform.sms.$error.pattern" style="color: red">Please Enter Correct URL.</span>
+                                                                    <span class="error-message" ng-show="smsform.sms.$dirty&&smsform.sms.$error.required" style="color: red">Please Enter Correct URL.</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row text-center" style="margin-right: 4%">
+                                                        <div class="buttons text-center" style="margin-right: 4%">
+                                                            <button ng-show="urlEditFlag" type="button btn-xs" class="md-raised btn-xs md-accent md-button md-ink-ripple" ng-click="urlEditFlag = !urlEditFlag;">Edit</button>
+                                                            <div ng-show="!urlEditFlag">
+                                                                <button type="btn-xs" class="btn btn-md btn-info" ng-click="urlEditFlag = true;SMSurl()" ng-disabled="!smsform.$valid">Save</button>
+                                                                <button type="btn-xs" class="btn btn-md btn-danger" ng-click="urlEditFlag = true;reset()">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+                                    <uib-tab heading="Send SMS" ng-if="isAdmin()">
+                                        <div class="panel panel-default" ng-controller="SendSmsController">
+                                            <md-progress-linear md-mode="indeterminate" ng-show="SendSmsflag"></md-progress-linear>
+                                            <div class="panel-body">
+                                                <form name="SmsSendform" class="form-horizontal form-validation" ng-submit="SendSMS()">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2 col-md-offset-1">Select Group</label>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="col-md-11">
+                                                                    <select class="form-control" ng-model="SendSmsModel.group" name="gtype" required>
+                                                                        <option value="">Choose Group</option>
+                                                                        <option value="ALL">ALL</option>
+                                                                        <option value="MASTER">MASTER</option>
+                                                                        <option value="DISTRIBUTOR">DISTRIBUTOR</option>
+                                                                        <option value="RETAILER">RETAILER</option>
+                                                                    </select>
+                                                                    <span class="error-message" ng-show="SmsSendform.gtype.$dirty&&SmsSendform.gtype.$error.required" style="color: red">Please Choose Group</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2 col-md-offset-1">Message</label>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="col-md-11">
+                                                                    <textarea class="form-control" placeholder="Enter Messages" rows="3" data-ng-model="SendSmsModel.message" ng-maxlength="255" name="SMS" required></textarea>
+                                                                    <span class="error-message" ng-show="SmsSendform.SMS.$dirty&&SmsSendform.SMS.$error.maxlength" style="color: red">Please give a smaller message.</span>
+                                                                    <span class="error-message" ng-show="SmsSendform.SMS.$dirty&&SmsSendform.SMS.$error.required" style="color: red">Please Enter message here</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row text-center" style="margin-right: 3%">
+                                                        <md-button type="submit" ng-disabled="!SmsSendform.$valid" class="md-raised md-primary btn-w-md" name="button">Send SMS</md-button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </uib-tab>
+
+                                </uib-tabset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

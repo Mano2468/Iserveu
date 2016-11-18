@@ -1,0 +1,43 @@
+<div class="page-signin" data-ng-controller="LoginCtrl">
+    <div class="wrapper">
+        <div class="main-body">
+            <div class="body-inner">
+                <div class="card bg-white">
+                 <form class="form-horizontal" name="login_form" ng-submit="login(LoginModel)">
+                    <div class="card-content">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="ui-input-group">
+                                        <input type="text" required class="form-control" ng-model="LoginModel.username" required>
+                                        <span class="input-bar"></span>
+                                        <label>UserID</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="ui-input-group">
+                                        <input type="password" required class="form-control" ng-model="LoginModel.password" required>
+                                        <span class="input-bar"></span>
+                                        <label>Password</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                    </div>
+                    <div class="card-action no-border text-right">
+                        <!-- <a href="#/" class="color-primary" ng-click="login(LoginModel)">Log In</a> -->
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
+                </div>
+
+                <div class="additional-info">
+                    <!-- <a href="#/page/signup">Register</a> -->
+                    <!-- <span class="divider-h"></span> -->
+                    <a href="#/forgot-password">Forgot your password?</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

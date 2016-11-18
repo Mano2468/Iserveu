@@ -1,0 +1,46 @@
+<div class="nav-wrapper slim-scroll" ng-controller="RetailSideBarCtrl">
+	<ul id="nav" class="nav" data-slim-scroll data-collapse-nav
+		data-highlight-active>
+		<li class="nav-title"><span data-translate="NAVIGATION"></span></li>
+		<li><a md-button aria-label="meanu" href="#/dashboard"><i
+				class="zmdi zmdi-home"></i><span data-translate="DASHBOARD"></span></a></li>
+		<li><a md-button aria-label="meanu" href="#/"><i
+				class="zmdi zmdi-assignment-account"></i><span
+				data-translate="REPORT"></span></a>
+		<ul>
+				<li><a md-button aria-label="meanu" href="#/transaction"><i
+						class="fa fa-circle"></i><span data-translate="TRANSACTION"></span></a></li>
+				<li><a md-button aria-label="meanu" href="#/WalletReport"><i
+						class="fa fa-circle"></i><span data-translate="WALLET_REPORT"></span></a></li>
+				<li><a md-button aria-label="meanu" href="#/refundstatus"><i
+						class="fa fa-circle"></i> <span data-translate="Refund Status"></span></a></li>
+				<li><a md-button aria-label="meanu" href="#/refundrequests"><i
+						class="fa fa-circle"></i><span data-translate="REFUND_REQUESTS"></span></a></li>
+						<!-- ng-show="Featurecheck('3')||Featurecheck('8')" -->
+				<li ng-show="Featurecheck('3')||Featurecheck('8')"><a md-button
+					aria-label="meanu" href="#/detailsfundtransfer"><i
+						class="fa fa-circle"></i> <span
+						data-translate="DETAILMONEYTRASFER"></span></a></li>
+			</ul></li>
+		<li><a md-button aria-label="meanu" href="#/"><i
+				class="zmdi zmdi-account-add"></i><span data-translate="MEMBER"></span></a>
+		<ul>
+				<li><a md-button aria-label="meanu" href="#/createuser"><i
+						class="fa fa-circle"></i><span data-translate="CREATE_USER"></span></a></li>
+				<li><a md-button aria-label="meanu" href="#/showuser"><i
+						class="fa fa-circle"></i><span data-translate="SHOW_USER"></span></a></li>
+			</ul></li>
+		<li><a md-button aria-label="meanu" href="#/"><i
+				class="zmdi zmdi-balance-wallet"></i><span data-translate="BALANCE"></span></a>
+		<ul>
+				<li><a md-button aria-label="meanu" href="#/addbalance"><i
+						class="fa fa-circle"></i><span data-translate="ADD_BALANCE"></span></a></li>
+				<li><a md-button aria-label="meanu"
+					href="#/balanceapprovalrequest"><i class="fa fa-circle"></i><span
+						data-translate="BALANCE_REQUESTS"></span></a></li>
+				<li><a md-button aria-label="meanu"
+					href="#/balancerequestreports"><i class="fa fa-circle"></i><span
+						data-translate="BALANCE_REQUEST_REPORTS"></span></a></li>
+			</ul></li>
+	</ul>
+</div>
