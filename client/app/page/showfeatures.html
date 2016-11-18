@@ -1,0 +1,60 @@
+<div ng-controller="AddFeatureController"><div class="page page-table"><div ui-preloader class="preloader active"><span></span></div><div class="row ui-section" ng-init="showfeaturelist()" ng-show="!editflag"><div class="col-md-12"><section class="panel panel-default table-dynamic"><md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear><div class="table-filters"><div class="row"><div class="col-xs-1"><md-switch ng-click="searchflag=!searchflag" aria-label="Switch 1" title="Advance Search"></md-switch></div><div ng-class="{'col-sm-5 col-xs-5': searchflag}" ng-hide="!searchflag"><form><input type="text" placeholder="Search..." class="search-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></form></div><div ng-class="{'col-sm-4 col-xs-4': !searchflag}" ng-hide="searchflag"><md-chips ng-model="tags" readonly="readonly" placeholder="Advanced search .." delete-button-label="Remove Tag" delete-hint="Press delete to remove tag" secondary-placeholder="Advanced search.." style="font-size: 10px"></md-chips></div><div class="col-sm-2, col-xs-2" ng-hide="searchflag" style="margin-top: 1%"><button class="md-raised btn-w-xs md-button md-ink-ripple" ng-click="AdvancedSearch(tags)">Go</button></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="!searchflag"><span>Showing {{filteredStores.length}}/{{stores.length}} entries</span></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="searchflag"><span>Showing {{currentPageStores.length}}/{{stores.length}} entries</span></div></div></div><div class="table-bordered table-responsive"><table class="table table-bordered table-striped"><thead><tr><th class="text-center" id="{{key}}" ng-repeat="(key, val) in currentPageStores[0]"><div class="th"><span ng-bind="formatName(key)"></span> <span class="fa fa-angle-up" data-ng-click=" order(key) " data-ng-class="{active: row == key}"></span> <span class="fa fa-angle-down" data-ng-click=" order('-'+key) " data-ng-class="{active: row == -key}"></span></div></th><th class="text-center" style="padding-left: 0.5%; padding-bottom: 0.7%" ng-show="currentPageStores != null&&usertype === 'ROLE_SUPER_ADMIN'">Edit Feature</th></tr></thead><tbody><tr data-ng-repeat="store in currentPageStores"><td class="text-center" ng-repeat="(key, val) in store">{{val}}</td><td class="text-center" ng-show="currentPageStores != null&&usertype === 'ROLE_SUPER_ADMIN'"><button class="btn btn-xs btn-info" type="button" ng-click="editFeature(store)">Edit</button></td></tr></tbody></table></div><footer class="table-footer"><div class="row"><div class="col-md-6 page-num-info"><span>Show<select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()"></select>entries per page</span></div><div class="col-md-6 text-right pagination-container"><uib-pagination class="pagination-sm" ng-model="currentPage" total-items="filteredStores.length" max-size="4" ng-change="select(currentPage)" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-links="true"></uib-pagination></div></div></footer></section></div></div><div class="row ui-section" ng-show="editflag"><script type="text/ng-template" id="myModalContent1.html"><div class="modal-header">
+                    <h3>Add New Provider</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="AddProviderForm">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="">Provider Name</label>
+                            </div>
+                            <div class="form-group col-sm-7 internal">
+                                <input type="text" name="provider_namedat" class="form-control" required ng-model="providermodel.pname">
+                                <span class="error-message" ng-show="AddProviderForm.provider_namedat.$dirty
+                                                                                         && AddProviderForm.provider_namedat.$error.required" style="color: red">The Provider Name is Mandatory
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="">Provider Code</label>
+                            </div>
+                            <div class="form-group col-sm-7 internal">
+                                <input type="text" name="provider_codedat" class="form-control" required ng-model="providermodel.pcode" ng-model-options="{ updateOn: 'blur'}" ng-change="validProvider(AddProviderForm)">
+                                <span class="error-message" ng-show="AddProviderForm.provider_codedat.$dirty
+                                                                                         && AddProviderForm.provider_codedat.$error.required" style="color: red">The Provider code is Mandatory
+                                </span>
+                                <span class="error-message" data-ng-show="codeexists" style="color: red">Provider code exists already</span>
+                            </div>
+
+                        </div>
+                        <div class="divider"></div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="">Provider Type</label>
+                            </div>
+                            <div class="form-group col-sm-7">
+                                <select class='form-control' name="provider_typedat" ng-model="providermodel.ptype" required>
+                                    <option value="">Choose one</option>
+                                    <option value="RECHARGE">Recharge</option>
+                                    <option value="AIR_TICKET">Air Ticket</option>
+                                    <option value="FUND_TRANSFER">Fund Transfer</option>
+                                </select>
+                                <span class="error-message" ng-show="AddProviderForm.provider_typedat.$dirty
+                                                                                        && AddProviderForm.provider_typedat.$error.required" style="color: red">The Provider type is Mandatory
+                                </span>
+                            </div>
+                        </div>
+                        <!-- <div class="divider"></div>
+                                                                <div class="row">
+                                                                    <div class="col-md-offset-5">
+                                                                        <md-button type="submit" class="md-raised btn-w-md md-primary">Submit</md-button>
+                                                                    </div>
+                                                                </div> -->
+
+                    </div>
+                    <div class="modal-footer">
+                        <button ui-wave class="btn btn-flat btn-danger" ng-click="cancel()">Cancel</button>
+                        <button ui-wave class="btn btn-flat btn-primary" ng-click="ok(AddProviderForm.$valid)">Submit</button>
+                    </div>
+                </form></script><div class="col-md-12"><section class="panel panel-default table-dynamic"><md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear><div class="table-filters"><div class="row"><div class="col-xs-1"><md-switch ng-click="searchflag=!searchflag" aria-label="Switch 1" title="Advance Search"></md-switch></div><div ng-class="{'col-sm-5 col-xs-5': searchflag}" ng-hide="!searchflag"><form><input type="text" placeholder="Search..." class="search-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></form></div><div ng-class="{'col-sm-4 col-xs-4': !searchflag}" ng-hide="searchflag"><md-chips ng-model="tags" readonly="readonly" placeholder="Advanced search .." delete-button-label="Remove Tag" delete-hint="Press delete to remove tag" secondary-placeholder="Advanced search.." style="font-size: 10px"></md-chips></div><div class="col-sm-2, col-xs-2" ng-hide="searchflag" style="margin-top: 1%"><button class="md-raised btn-w-xs md-button md-ink-ripple" ng-click="AdvancedSearch(tags)">Go</button></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="!searchflag"><span>Showing {{filteredStores.length}}/{{stores.length}} entries</span></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="searchflag"><span>Showing {{currentPageStores.length}}/{{stores.length}} entries</span></div><md-button class="md-raised btn-w-md md-primary" ng-click="open1()">Add</md-button></div></div><div class="table-bordered table-responsive"><table class="table table-bordered table-condensed table-striped"><thead><tr><th class="text-center" id="{{key}}" ng-repeat="(key, val) in currentPageStores[0]"><div class="th"><span ng-bind="formatName(key)"></span> <span class="fa fa-angle-up" data-ng-click=" order(key) " data-ng-class="{active: row == key}"></span> <span class="fa fa-angle-down" data-ng-click=" order('-'+key) " data-ng-class="{active: row == -key}"></span></div></th><th class="text-center" style="padding-left: 0.5%; padding-bottom: 0.7%" ng-show="currentPageStores==[]&&usertype === 'ROLE_SUPER_ADMIN'">Edit Feature</th></tr></thead><tbody><tr data-ng-repeat="store in currentPageStores"><td class="text-center" ng-repeat="(key, val) in store">{{val}}</td><td class="text-center" ng-show="currentPageStores ==[]&&usertype === 'ROLE_SUPER_ADMIN'"><button class="btn btn-xs btn-info" type="button" ng-click="">Edit</button></td></tr></tbody></table></div><footer class="table-footer"><div class="row"><div class="col-md-6 page-num-info"><span>Show<select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()"></select>entries per page</span></div><div class="col-md-6 text-right pagination-container"><uib-pagination class="pagination-sm" ng-model="currentPage" total-items="filteredStores.length" max-size="4" ng-change="select(currentPage)" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-links="true"></uib-pagination></div></div></footer></section></div></div></div></div>

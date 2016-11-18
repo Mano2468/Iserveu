@@ -1,0 +1,87 @@
+<div class="page"><div class="row ui-section"><div layout="column"><h2 class="section-header">Reports</h2>
+</div>
+<div ng-controller="RefundRequest_Ctrl as ctrl" ng-cloak><div layout="column"><section class="panel panel-default"><div class="panel-body padding-xl form-validation"><div class="row text-center"><div class="col-md-8 col-md-offset-2"><div class="col-md-12"><form role="form" class="form-inline" name="tfrom" ng-submit="TransactionSubmit()"><div class="form-group"><md-input-container><label for="transaction">Transaction Type</label><md-select ng-model="transModel.transaction_Type" required><md-option ng-value="typename" ng-repeat="typename in userTransactionTypeList">{{typename}}</md-option></md-select></md-input-container></div><div class="form-group"><div class="input-group"><md-datepicker ng-model="transModel.from_Date" md-placeholder="From Date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker></div></div><div class="form-group"><div class="input-group"><md-datepicker ng-model="transModel.to_Date" md-placeholder="To Date" ng-disabled="!transModel.from_Date" md-min-date="transModel.from_Date" md-max-date="maxDate"></md-datepicker></div></div><br><hr><div class="row text-center"><md-button type="submit" class="md-raised md-primary btn-w-md" name="button" ng-disabled="!canSubmit(tfrom.$valid)">Submit</md-button></div></form></div></div></div></div></section></div><div class="row ui-section"><div class="page page-table"><div class="row ui-section"><div layout="column"><section class="panel panel-default table-dynamic"><md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear><div class="table-filters"><div class="row"><div class="col-xs-1"><md-switch ng-click="searchflag=!searchflag" aria-label="Switch 1" title="Advance Search"></md-switch></div><div ng-class="{'col-sm-5 col-xs-5': searchflag}" ng-hide="!searchflag"><form><input type="text" placeholder="Search..." class="search-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></form></div><div ng-class="{'col-sm-4 col-xs-4': !searchflag}" ng-hide="searchflag"><md-chips ng-model="tags" readonly="readonly" placeholder="Advanced search .." delete-button-label="Remove Tag" delete-hint="Press delete to remove tag" secondary-placeholder="Advanced search.." style="font-size: 10px"></md-chips></div><div class="col-sm-2, col-xs-2" ng-hide="searchflag" style="margin-top: 1%"><button class="md-raised btn-w-xs md-button md-ink-ripple" ng-click="AdvancedSearch(tags)">Go</button></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="!searchflag"><span>Showing {{filteredStores.length}}/{{stores.length}} entries</span></div><div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="searchflag"><span>Showing {{currentPageStores.length}}/{{stores.length}} entries</span></div></div></div><div class="table-bordered table-responsive"><table class="table table-bordered table-condensed table-striped table-responsive" id="exportable"><thead><tr><th class="text-center" ng-repeat="(key, val) in currentPageStores[0]"><div class="th"><span ng-bind="formatName(key)"></span> <span class="fa fa-angle-up" data-ng-click=" order(key) " data-ng-class="{active: row == key}"></span> <span class="fa fa-angle-down" data-ng-click=" order('-'+key) " data-ng-class="{active: row == -key}"></span></div></th><th class="text-center" style="padding-left: 0.7%; padding-bottom: 0.7%" ng-hide="(currentPageStores[0] == null)||!(usertype ==='ROLE_ADMIN')">Action</th></tr></thead><tbody><tr data-ng-repeat="store in currentPageStores"><td class="text-center" ng-repeat="(key, val) in store">{{val}}</td><td class="text-center" ng-hide="(currentPageStores[0] == null)||!(usertype ==='ROLE_ADMIN')"><button class="btn btn-xs btn-info" type="button" ng-click="approveOrDecline(store,'approve')">Approve</button> <button class="btn btn-xs btn-danger" type="button" ng-click="Decline(store,'decline')">Decline</button></td></tr></tbody></table></div><footer class="table-footer"><div class="row"><div class="col-md-6 page-num-info"><span>Show<select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()"></select>entries per page</span></div><div class="col-md-6 text-right pagination-container"><uib-pagination class="pagination-sm" ng-model="currentPage" total-items="filteredStores.length" max-size="4" ng-change="select(currentPage)" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-links="true"></uib-pagination></div></div></footer></section></div></div></div></div></div></div></div><script type="text/ng-template" id="commentmodal.html"><div class="modal-header">
+              <h3>Please provide a comment.</h3>
+            </div>
+            <div class="modal-body">
+ <section class="panel panel-default">
+        <div class="panel-body padding-xl">
+          <div class="row">
+            <div class="col-md-12">
+            <form name="ADform" class="form-horizontal form-validation" ng-submit="ok()">
+               <div class="form-group">
+            <label class='control-label col-md-2'>Status</label>
+            <div class='col-md-9'>
+            <select class="form-control" name="type" ng-model="confirmModal.type" ng-options=" type.type as type.type for type in stype" required>
+													<option
+													value="">Type</option>
+													<!-- <option value="SUCCESS">SUCCESS</option>
+													<option value="FAIL" >FAIL</option> -->
+												</select>
+												<span class="error-message"
+            ng-show="ADform.type.$dirty
+            && ADform.type.$error.required"
+            style="color: red">Please Choose one
+           </span>
+												</div>
+											</div>
+           <div class='form-group'>
+          <label class='control-label col-md-2'>Comments</label>
+          <div class='col-md-9'>
+           <textarea class='form-control'
+           placeholder='Additional comments' rows='3'
+           data-ng-model="confirmModal.comment" required name="comment">
+           <span class="error-message"
+            ng-show="ADform.comment.$dirty
+            && ADform.comment.$error.required"
+            style="color: red">The comment is Mandatory.
+           </span>
+           </textarea>
+          </div>
+            </div>
+         <button type="submit" class="btn btn-primary center-block" ng-disabled="!ADform.$valid">submit</button>
+                  </form>
+            </div>
+          </div>
+        </div>
+     </section>
+            <div class="modal-footer">
+              <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+              <!-- <button ui-wave class="btn btn-flat btn-primary" ng-diasbled="canSubmitModal()" ng-click="ok()">OK</button> -->
+            </div>
+
+            </div></script><script type="text/ng-template" id="Declinemodal.html"><div class="modal-header">
+              <h3>Please provide a comment.</h3>
+            </div>
+            <div class="modal-body">
+ <section class="panel panel-default">
+        <div class="panel-body padding-xl">
+          <div class="row">
+            <div class="col-md-12">
+            <form name="Dform" class="form-horizontal form-validation" ng-submit="ok()">
+           <div class='form-group'>
+          <label class='control-label col-md-2'>Comments</label>
+          <div class='col-md-9'>
+           <textarea class='form-control'
+           placeholder='Additional comments' rows='3'
+           data-ng-model="DeclineModel.comment" required name="dcomment">
+           <span class="error-message"
+            ng-show="Dform.dcomment.$dirty
+            && Dform.dcomment.$error.required"
+            style="color: red">The comment is Mandatory.
+           </span>
+           </textarea>
+          </div>
+            </div>
+         <button type="submit" class="btn btn-primary center-block" ng-disabled="!Dform.$valid">submit</button>
+                  </form>
+            </div>
+          </div>
+        </div>
+     </section>
+            <div class="modal-footer">
+              <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+              <!-- <button ui-wave class="btn btn-flat btn-primary" ng-diasbled="canSubmitModal()" ng-click="ok()">OK</button> -->
+            </div>
+
+            </div></script>

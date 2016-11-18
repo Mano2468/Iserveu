@@ -1,0 +1,124 @@
+<header class="top-header clearfix">
+    <div
+        class="logo"
+        ng-class="{ 'bg-dark': ['11','31'].indexOf(main.skin) >= 0,
+                     'bg-white': main.skin === '21',
+                     'bg-primary': ['12','22','32'].indexOf(main.skin) >= 0,
+                     'bg-success': ['13','23','33'].indexOf(main.skin) >= 0,
+                     'bg-info': ['14','24','34'].indexOf(main.skin) >= 0,
+                     'bg-warning': ['15','25','35'].indexOf(main.skin) >= 0,
+                     'bg-danger': ['16','26','36'].indexOf(main.skin) >= 0 }">
+        <a href="#/">
+            <span class="logo-icon zmdi zmdi-view-dashboard"></span>
+            <span class="logo-text">{{main.brand}}</span>
+        </a>
+    </div>
+    <div class="menu-button" toggle-off-canvas>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+    <div class="top-nav">
+        <ul class="nav-left list-unstyled">
+            <li>
+                <a href="#/" data-toggle-nav-collapsed-min md-button aria-label="toggle-nav-collapsed-min" class="toggle-min">
+                    <i class="zmdi zmdi-menu"></i>
+                </a>
+            </li>
+        </ul>
+       <ul class="list-unstyled marqu">
+           <li ><marquee style="margin-top: 5px; font-family: verdana">{{BannerMessage}}</marquee></li>
+       </ul>
+        <ul class="nav-right pull-right list-unstyled">
+            <li>
+                <a class="md-button" data-ng-click="UpdateBalance()">
+                    <span>
+                        <i class="zmdi zmdi-balance-wallet ng-isolate-scope material-icons" aria-hidden="true"></i>
+                    </span>
+                    <span data-translate="{{balance}}"></span>
+                </a>
+            </li>
+
+            <li class="dropdown text-normal nav-profile" uib-dropdown is-open="status.isopenProfile">
+                <a href="javascript:;" class="dropdown-toggle" uib-dropdown-toggle ng-disabled="disabled" md-button aria-label="profile"><img src="images/g1.jpg" alt="" class="img-circle img30_30">
+                    <span class="hidden-xs">
+                        <span data-translate="{{user}}"></span>
+                    </span>
+                </a>
+                <ul class="with-arrow pull-right dropdown-menu-scaleIn" uib-dropdown-menu>
+                    <li>
+                        <a href="#/">
+                            <i class="zmdi zmdi-home"></i>
+                            <span data-translate="DASHBOARD"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/profile">
+                            <i class="zmdi zmdi-account"></i>
+                            <span data-translate="MY_PROFILE"></span>
+                        </a>
+                    </li>
+                    <li data-ng-controller="Password_ResetController">
+                        <a href="" ng-click="password()">
+                            <i class="zmdi zmdi-key"></i>
+                            <span data-translate="CHANGE_PASSWORD"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#/settingpage" ng-show="CheckAdmin()">
+                            <i class="zmdi zmdi-settings"></i>
+                            <span data-translate="SETTINGS"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" data-ng-click="LogOut()">
+                            <i class="zmdi zmdi-forward"></i>
+                            <span data-translate="LOG_OUT"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <script type="text/ng-template" id="modal.html">
+        <div class="modal-header">
+            <h3>Change Password</h3>
+        </div>
+        <div class="modal-body">
+            <form name="form" data-ng-submit="PasswordReset()" class="form-horizontal form-validation">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label for="">New Password</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="password" required class="form-control" data-ng-model="password.newpassword" name="pass" ng-minlength="6" data-ng-trim='false'>
+                            <span class="error-message" ng-show="form.pass.$dirty
+                      && form.pass.$error.minlength" style="color: red">The Password should be minimum 6 characters</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3">
+                            <label for="">Confirm Password</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="password" required class="form-control" ng-model="password.confirmpassword" name="cpass" ng-minlength="6" data-ng-trim='false' data-match="password.newpassword">
+                            <span class="error-message" ng-show="form.cpass.$dirty
+                      && form.cpass.$error.minlength" style="color: red">The Password should be minimum 6 characters</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <md-button type="submit" class="md-raised btn-w-md md-primary " data-ng-disabled="!canSubmit(form.$valid)" ng-click="cancel()">Update</md-button>
+
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+        <!--  <div class="modal-footer">
+              <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+              <button ui-wave class="btn btn-flat btn-primary" ng-click="ok()">OK</button>
+            </div> -->
+    </script>
+</header>

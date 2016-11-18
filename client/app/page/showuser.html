@@ -1,0 +1,303 @@
+<div ng-controller="ShowUsercontroller">
+    <div class="page page-table">
+        <div ui-preloader class="preloader active">
+            <span></span>
+        </div>
+        <div class="row ui-section">
+            <div layout="column">
+                <section class="panel panel-default table-dynamic">
+                    <md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear>
+                    <div class="table-filters">
+                        <div class="row hidden-xs">
+                            <div class="col-sm-1 col-xs-1">
+                                <md-switch ng-click="searchflag=!searchflag" aria-label="Switch 1" title="Advance Search"></md-switch>
+                            </div>
+                            <div ng-class="{'col-sm-5 col-xs-6': searchflag}" ng-hide="!searchflag">
+                                <form><input type="text" placeholder="Search..." class="search-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></form>
+                            </div>
+                            <div ng-class="{'col-sm-4 col-xs-4': !searchflag}" ng-hide="searchflag">
+                                <md-chips ng-model="tags" readonly="readonly" placeholder="Advanced search .." delete-button-label="Remove Tag" delete-hint="Press delete to remove tag" secondary-placeholder="Advanced search.." style="font-size: 10px"></md-chips>
+                            </div>
+                            <div class="col-sm-2, col-xs-2" ng-hide="searchflag" style="margin-top: 1%">
+                                <button class="md-raised btn-w-xs md-button md-ink-ripple" ng-click="AdvancedSearch(tags)">Go</button>
+                            </div>
+                            <div class="col-sm-2 col-xs-2 filter-result-info" ng-hide="!searchflag">
+                                <div class="row text-left" style="margin-left: 20%">
+                                    <span>Showing
+                                        {{filteredStores.length}}/{{stores.length}}
+                                        entries</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 col-xs-5 filter-result-info" ng-hide="searchflag">
+                                <div class="row text-left" style="margin-left: 20%">
+                                    <span>Showing
+                                        {{currentPageStores.length}}/{{stores.length}}
+                                        entries</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-3">
+                                <div class="row text-left" style="margin-left: 10%">
+                                    <h5>Total Balance Rs:{{totalTransaction}}</h5>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-xs-3 filter-result-info">
+                                <form name="form" role="form" ng-submit="RefreshSubmit()">
+                                    <jp-ng-bs-animated-button is-submitting="isSubmitting" result="result" options="options"></jp-ng-bs-animated-button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row hidden-md hidden-lg">
+                            <div class="col-xs-12">
+                                <div class="col-xs-9">
+                                    <div class="col-xs-1">
+                                        <md-switch ng-click="searchflag=!searchflag" aria-label="Switch 1" title="Advance Search"></md-switch>
+                                    </div>
+                                    <div ng-class="{'col-xs-6': searchflag}" ng-hide="!searchflag" style="margin-left: 5%; margin-top: -2%">
+                                        <form><input type="text" placeholder="Search..." class="search-control" data-ng-model="searchKeywords" data-ng-keyup="search()"></form>
+                                    </div>
+                                    <div ng-class="{'col-xs-6': !searchflag}" ng-hide="searchflag" style="margin-left: 5%; margin-top: -2%">
+                                        <md-chips ng-model="tags" readonly="readonly" placeholder="Advanced search .." delete-button-label="Remove Tag" delete-hint="Press delete to remove tag" secondary-placeholder="Advanced search.." style="font-size: 10px"></md-chips>
+                                    </div>
+                                    <div class="col-xs-2" ng-hide="searchflag" style="margin-top: 1%">
+                                        <button class="md-raised btn-w-xs md-button md-ink-ripple" ng-click="AdvancedSearch(tags)">Go</button>
+                                    </div>
+                                    <div class="col-xs-3 filter-result-info" ng-hide="!searchflag">
+                                        <div class="row text-left" style="margin-left: 20%">
+                                            <span>Showing
+                                                {{filteredStores.length}}/{{stores.length}}
+                                                entries</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5 filter-result-info" ng-hide="searchflag">
+                                        <div class="row text-left" style="margin-left: 20%">
+                                            <span>Showing
+                                                {{currentPageStores.length}}/{{stores.length}}
+                                                entries</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="row text-left" style="margin-left: .5%">
+                                        <h5>Total Balance Rs:{{totalTransaction}}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-xs-2 filter-result-info">
+                                    <form name="form" role="form" ng-submit="RefreshSubmit()">
+                                        <jp-ng-bs-animated-button is-submitting="isSubmitting" result="result" options="options"></jp-ng-bs-animated-button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-bordered table-responsive">
+                        <table class="table table-bordered table-striped table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" id="{{key}}" ng-repeat="(key, val) in currentPageStores[0]">
+                                        <div class="th">
+                                            <span ng-bind="formatName(key)"></span>
+                                            <span class="fa fa-angle-up" data-ng-click=" order(key) " data-ng-class="{active: row == key}"></span>
+                                            <span class="fa fa-angle-down" data-ng-click=" order('-'+key) " data-ng-class="{active: row == -key}"></span>
+                                        </div>
+                                    </th>
+                                    <th class="text-center" style="padding-left: 0.5%; padding-bottom: 0.7%" ng-hide="(currentPageStores.length==0)">Edit User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="store in currentPageStores">
+                                    <td class="text-center" ng-repeat="(key, val) in store">
+                                        <span ng-hide="KeyChecker(key)">{{val}}</span>
+                                        <md-switch ng-show="KeyChecker(key)" ng-model="store.active" aria-label="Switch 1" ng-click="ActiveorDeactive(store)" style="margin: 1%"></md-switch>
+                                        <button ng-show="PayChecker(key)" class="btn btn-md btn-info" type="button" ng-click="open(store)">Pay</button>
+                                        <button ng-show="DebitChecker(key)" class="btn btn-md btn-info" type="button" ng-click="Debit(store)">Debit</button>
+                                    </td>
+                                    <td class="text-center" ng-show="currentPageStores != null">
+                                        <button class="btn btn-md btn-info" type="button" ng-click="GoToEdit(store)">Edit</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <script type="text/ng-template" id="paymentModal.html">
+                        <style>
+                            .md-datepicker-calendar-pane {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: 1151;
+                                border-width: 1px;
+                                border-style: solid;
+                                background: transparent;
+                                -webkit-transform: scale(0);
+                                transform: scale(0);
+                                -webkit-transform-origin: 0 0;
+                                transform-origin: 0 0;
+                                transition: -webkit-transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+                                transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+                            }
+                            .md-datepicker-calendar-pane.md-pane-open {
+                                -webkit-transform: scale(1);
+                                transform: scale(1);
+                            }
+                        </style>
+                        <div class="modal-body">
+                            <div class="page">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body padding-xl">
+                                                <div class="row">
+                                                    <div class="col-md-8 col-md-offset-2">
+                                                        <form name="paymentForm" class="form-horizontal form-validation" data-ng-submit="ok()">
+                                                            <fieldset>
+                                                                <div class="form-group row">
+                                                                    <input type="text" class="form-control" ng-model="paymentModel.sender_Name" name="sname" ng-minlength="2" placeholder="Sender Name (Optional) " ng-maxlength="30">
+                                                                    <span class="error-message" ng-show="paymentForm.sname.$dirty
+                                                                  && paymentForm.sname.$error.minlength" style="color:red">The Sender Name should be minimum 2 characters</span>
+
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+                                                                    <input type="text" class="form-control" ng-model="paymentModel.sender_BankName" name="sbname" placeholder="Sender Bank Name (Optional)">
+                                                                    <span class="error-message" ng-show="paymentForm.sbname.$dirty
+                                                              && paymentForm.sbname.$error.required" style="color:red">The Sender Bank Name Required</span>
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+                                                                    <input class="form-control" ng-model="paymentModel.sender_AccountNO" name="saname" ng-pattern="/^\d+$/" placeholder="Sender Account No (Optional)">
+                                                                    <span class="error-message" ng-show="paymentForm.saname.$dirty
+                                                              && paymentForm.saname.$error.required" style="color:red">The Sender Account No Required</span>
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+                                                                    <md-datepicker ng-model="paymentModel.deposite_date" md-placeholder="Deposit Date(Required)" required></md-datepicker>
+
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+
+                                                                    <input ng-pattern="/^\d+$/" class="form-control" ng-model="paymentModel.amount" placeholder="Amount (Required)" name="num" required data-min=1>
+                                                                    <span class="error-message" ng-show="paymentForm.num.$dirty
+                                                              && paymentForm.num.$error.required" style="color:red">Please Enter Amount</span>
+                                                                    <span class="error-message" ng-show="paymentForm.num.$dirty
+                                                              && paymentForm.num.$error.pattern" style="color:red">Please enter a valid amount.</span>
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+                                                                    <select class="form-control" ng-model="paymentModel.transfer_Type" name="select">
+                                                                        <option value="">Choose one Transfer Type (Optional)</option>
+                                                                        <option value="IMPS">IMPS</option>
+                                                                        <option value="NEFT">NEFT</option>
+                                                                        <option value="RTGS">RTGS</option>
+                                                                        <option value="FUNDTRANSFER">FUND TRANSFER</option>
+                                                                        <option value="CASH_DEPOSIT">CASH DEPOSIT</option>
+                                                                    </select>
+                                                                    <span class="error-message" ng-show="paymentForm.select.$dirty
+                                                          && paymentForm.select.$error.required" style="color:red">Please Choose</span>
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row">
+                                                                    <input type="text" class="form-control" ng-model="paymentModel.bank_RefId" name="bref" placeholder="Bank Ref ID (Optional)">
+                                                                    <span class="error-message" ng-show="paymentForm.bref.$dirty
+                                                          && paymentForm.bref.$error.required" style="color:red">Enter Bank Ref-ID</span>
+
+                                                                </div>
+                                                                <div class="divider divider-md"></div>
+
+                                                                <div class="form-group">
+
+                                                                    <textarea name="" id="" class="form-control" rows="3" ng-model="paymentModel.remarks" placeholder="Remarks (Optional)" name="rmark">
+                                                                        <!-- <span class="error-message" ng-show="paymentForm.rmark.$dirty
+                                                                  && paymentForm.rmark.$error.required" style="color:red">Enter Remarks</span> -->
+                                                                    </textarea>
+                                                                </div>
+
+                                                                <div class="divider divider-md"></div>
+                                                                <div class="form-group row text-center">
+                                                                    <div class="col-sm-12" style="margin: 1%">
+                                                                        <md-button type="submit" class="md-raised md-primary btn-w-md" name="button" ng-disabled="!canSubmit(paymentForm.$valid)||datafetchflag">Submit</md-button>
+                                                                    </div>
+                                                                    <div class="col-sm-12" style="margin: 1%">
+                                                                        <md-button type="button" class="md-raised md-warn btn-w-md" name="button" ng-click="cancel()">Cancel</md-button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="divider"></div>
+
+                                                            </fieldset>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </script>
+                    <script type="text/ng-template" id="DebitModal.html">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body padding-xl">
+                                            <form name="debitForm" class="form-horizontal form-validation" data-ng-submit="ok()">
+                                                <div class="row">
+                                                    <label class='control-label col-md-2'>Amount</label>
+                                                    <div class='col-md-8'>
+                                                        <div class='form-group'>
+                                                            <input class='form-control' placeholder="Enter Amount" ng-pattern="/^\d+$/" name='amount' data-ng-model="Debitmodel.amount" min="1" required>
+                                                            <span class="error-message" ng-show="debitForm.amount.$dirty
+                                                              && debitForm.amount.$error.required" style="color:red">Please Enter Amount</span>
+                                                            <span class="error-message" ng-show="debitForm.amount.$dirty
+                                                              && debitForm.amount.$error.pattern" style="color:red">Please enter a valid amount.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="row">
+                                                    <label class='control-label col-md-2'>Remarks</label>
+                                                    <div class='col-md-8'>
+                                                        <div class='form-group'>
+                                                            <textarea class='form-control' placeholder='Enter Remarks (Optional)' rows='3' data-ng-model="Debitmodel.remarks" name="remarks"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="row text-center">
+                                                    <md-button type="submit" class="md-raised md-primary btn-w-md" name="button" ng-click="ok(Debitmodel)" ng-disabled="!canSubmit(debitForm.$valid)">Submit</md-button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button ui-wave class="btn btn-flat btn-default" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </script>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-6 page-num-info">
+                                <span>Show<select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()"></select>entries per page</span>
+                            </div>
+                            <div class="col-md-6 text-right pagination-container">
+                                <uib-pagination
+                                    class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredStores.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;"
+                                    next-text="&rsaquo;"
+                                    boundary-links="true"></uib-pagination>
+                            </div>
+                        </div>
+                    </footer>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

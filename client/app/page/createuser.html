@@ -1,0 +1,196 @@
+<div class="page" data-ng-controller="CreateUser">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">Create User</h2>
+        </div>
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear>
+                <div class="panel-body padding-xl">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <section class="ui-angular-wizard">
+                                <div class="row text-centre">
+                                    <wizard>
+                                        <wz-step wz-title="User Details" canexit="exitWithAPromise">
+                                            <h2>Please fill User Details</h2>
+                                            <br>
+                                            <form name="form_signup" class="form-horizontal form-validation">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">User Type</label>
+                                                    <div class="col-md-3">
+                                                        <select class="form-control" name="usertype" required data-ng-model="newUserModel.userType">
+                                                            <option value="">- Please Choose User Type -</option>
+                                                            <option ng-value="item" ng-repeat="item in userTypeList">{{item}}</option>
+                                                        </select>
+                                                        <span class="error-message" data-ng-show="form_signup.usertype.$dirty
+                                            && form_signup.usertype.$error.required" style="color: red">The User Type is Mandatory.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">Name</label>
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal">
+                                                                <input class="form-control" type="text" placeholder="First Name" type="text" required name="fname" data-ng-minlength="2" data-ng-maxlength="30" data-ng-model="newUserModel.firstName">
+                                                                <span class="error-message" data-ng-show="form_signup.fname.$dirty
+                                            && form_signup.fname.$error.minlength" style="color: red">The Name should be minimum 2 characters</span>
+                                                            </div>
+                                                        </div>
+                                                        <label class="control-label col-md-2">Shop Name</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal input-group">
+                                                                <input class="form-control" type="text" placeholder="Shop Name" type="text" name="lname" data-ng-minlength="2" data-ng-maxlength="10" data-ng-model="newUserModel.lastName" required>
+                                                                <span class="error-message" data-ng-show="form_signup.lname.$dirty
+                                            && form_signup.lname.$error.minlength" style="color: red">The Shop Name should be minimum 2 characters</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">Contact</label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="col-md-11">
+                                                                <input class="form-control" placeholder="E-mail" type="email" name="email" data-ng-model="newUserModel.email" required ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/">
+                                                                <span class="error-message" data-ng-show="form_signup.email.$dirty
+                                            && form_signup.email.$error.pattern" style="color: red">The Email is Mandatory</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group internal">
+                                                            <div class="col-md-11">
+                                                                <input name="phnumber" class="form-control" placeholder="Phone: (xxx) - xxx xxxx" type="text" data-ng-model="newUserModel.mobileNumber" data-ng-maxlength="10" data-ng-minlength="10" data-ng-pattern="/^\d{10}$/" required>
+                                                                <span class="error-message" data-ng-show="form_signup.phnumber.$dirty
+                                            && form_signup.phnumber.$error.pattern" style="color: red">The phone number should be of 10 digits</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">Address</label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="col-md-11">
+                                                                <input class="form-control" placeholder="Address" type="text" data-ng-model="newUserModel.address" required name="add">
+                                                                <span class="error-message" data-ng-show="form_signup.add.$dirty
+                                            && form_signup.add.$error.required" style="color: red">The Address is Mandatory</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">City</label>
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal">
+                                                                <input class="form-control" type="text" placeholder="City" data-ng-model="newUserModel.city" required name="city">
+                                                                <span class="error-message" data-ng-show="form_signup.city.$dirty
+                                            && form_signup.city.$error.required" style="color: red">The City is Mandatory</span>
+                                                            </div>
+                                                        </div>
+                                                        <label class="control-label col-md-2">State</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal input-group">
+                                                                <input class="form-control" type="text" placeholder="State" data-ng-model="newUserModel.state" required name="state">
+                                                                <span class="error-message" data-ng-show="form_signup.state.$dirty
+                                            && form_signup.state.$error.required" style="color: red">The State is Mandatory</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui-wizard-actions">
+                                                    <md-button type="submit" wz-next class="md-raised btn-w-md md-primary" ng-disabled="!canSubmitformSignup(form_signup)" ng-click="SubmitUserDetail()">Next</md-button>
+                                                </div>
+                                            </form>
+                                        </wz-step>
+                                        <wz-step>
+                                            <h2>Create User Credentials</h2>
+                                            <br>
+                                            <form name="form_user_name" class="form-horizontal form-validation" role="form">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">User Name</label>
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal">
+                                                                <input class="form-control" type="text" placeholder="User Name" ng-model="userNameModel.userName" ng-model-options="{ updateOn: 'blur' }" ng-change="validUserNames(form_user_name)" ng-pattern="/^[a-zA-Z]+\w*[^\W]\b$/" name="UserId">
+                                                                <span class="error-message" ng-show="form_user_name.UserId.$dirty
+                                            && form_user_name.UserId.$error.pattern" style="color: red">User Name Invalid (hint:alphanumeric).</span>
+                                                                <span class="error-message" data-ng-show="userNameModel.userNameExist===false" data-ng-hide="userNameModel.userNameExist===true" style="color: red">UserName not available, try giving user name in a unique pattern.</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2 col-md-offset-2">Password</label>
+                                                    <div class="col-md-8">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal">
+                                                                <input class="form-control" type="password" placeholder="Password" ng-model="userNameModel.password" required name="pass" ng-minlength="6" data-ng-trim="false">
+                                                                <span class="error-message" ng-show="form_user_name.pass.$dirty
+                                            && form_user_name.pass.$error.minlength" style="color: red">The Password should be Mandatory and minimum 6 characters</span>
+                                                            </div>
+                                                        </div>
+                                                        <label class="control-label col-md-2">Confirm Password</label>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group internal">
+                                                                <input class="form-control" type="password" placeholder="Confirm Password" name="cpass" ng-model="userNameModel.confirmpassword" ng-minlength="6" required data-ng-trim="false" data-match="userNameModel.password">
+                                                                <span class="error-message" ng-show="form_user_name.cpass.$dirty
+                                            && form_user_name.cpass.$error.minlength" style="color: red">The Password should be minimum 6 characters</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui-wizard-actions">
+                                                    <md-button wz-next class="md-raised btn-w-md md-primary" ng-disabled="!canfinished(form_user_name)" ng-click="GetfeatureList()">NEXT</md-button>
+                                                </div>
+                                            </form>
+                                        </wz-step>
+                                        <wz-step wz-title="Features">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1"><p>Minimum Balance</p></label>
+                                                <div class="col-md-6">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group internal">
+                                                            <input class="form-control" type="number" placeholder="Min Balance" ng-model="newUserModel.minBalance">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <h2>Features List</h2>
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <table class="table no-margin">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Features Name</th>
+                                                                <th>Selected Features</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="Feature in FeatureList">
+                                                                <td>{{Feature.featureName}}</td>
+                                                                <td>
+                                                                    <md-checkbox value="Feature.featureName" ng-click="toggleFeature(Feature)">{{Feature.featureName}}</md-checkbox>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="ui-wizard-actions">
+                                                <md-button wz-previous="logStep()" class="md-raised btn-w-md">BACK</md-button>
+                                                <button class="md-raised btn-w-md btn-w-sm md-primary md-button md-ink-ripple" type="submit" aria-label="Feature List" ng-click="finished()" ng-disabled="CheckFeature()">Finish</button>
+                                            </div>
+                                        </wz-step>
+                                    </wizard>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

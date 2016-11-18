@@ -1,0 +1,40 @@
+<div class="page">
+    <div class="row ui-section">
+        <div class="col-lg-8 clearfix">
+            <h2 class="section-header">Add Feature</h2>
+        </div>
+        <div class="col-md-12" data-ng-controller="AddFeatureController" ng-cloak>
+            <section class="panel panel-default">
+                <md-progress-linear md-mode="indeterminate" ng-show="datafetchflag"></md-progress-linear>
+                <div class="panel-body padding-xl form-validation">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <form name="form_add_feature" class="form-validation" data-ng-submit="featureSubmit()">
+                                <fieldset>
+                                    <md-input-container class="md-block">
+                                        <label>Feature Name</label>
+                                        <md-icon class="zmdi zmdi-balance-wallet"></md-icon><input required type="text" name="featureName" ng-model="feature.featureName" data-min="1">
+                                        <div ng-messages="form_add_feature.featureName.$error" multiple="multiple" ng-if="form_add_feature.featureName.$dirty">
+                                            <div ng-message="required">Feature name is required.</div>
+                                            <div ng-message="pattern">Please enter a valid amount.</div>
+                                        </div>
+                                    </md-input-container>
+                                    <div class="divider divider-md"></div>
+                                    <md-input-container class="md-block">
+                                        <label>Feature Description</label>
+                                        <md-icon class="zmdi zmdi-collection-text"></md-icon><input required type="text" name="featureDescription" ng-model="feature.featureDescription">
+                                        <div ng-messages="form_add_feature.featureDescription.$error" multiple="multiple" ng-if="form_add_feature.featureDescription.$dirty">
+                                            <div ng-message="required">Please provide a description.</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-button type="submit" class="md-raised btn-w-md md-primary" data-ng-disabled="!canSubmit()||datafetchflag">Add Feature</md-button>
+                                    <md-button class="btn-w-md" data-ng-disabled="!canRevert()" data-ng-click="revert()">Reset</md-button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1189 @@
+<html >
+<!--<![endif]-->
+
+<head>
+<!-- Page Title -->
+<title>Welcome To Travel Portal!!</title>
+<!-- Meta Tags -->
+<meta charset="utf-8">
+<meta name="keywords" content="Book Flights,Hotels,Bus" />
+<meta name="description"
+	content="Book flights , hotels and bus in affordable price.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/x-icon" href="/images/favicon.png">
+<!-- Theme Styles -->
+<link rel="stylesheet" href="styles/travel/bootstrap.min.css">
+<link rel="stylesheet" href="styles/travel/font-awesome.min.css">
+<link rel="stylesheet" type="text/css"
+	href="styles/travel/jquery.bxslider/jquery.bxslider.css" media="screen" />
+<style>
+.ng-cloak {
+	display: none !important;
+}
+</style>
+<link rel="stylesheet" href="styles/travel/animate.min.css">
+
+
+<link rel="stylesheet" type="text/css"
+	href="styles/travel/revolution_slider/css/style.css" media="screen" />
+
+
+ <link rel="stylesheet" href="styles/travel/angular-selector.css">
+<link rel="stylesheet" href="styles/travel/angular-toastr.css">
+<!--  Main Style -->
+<link id="main-style" rel="stylesheet" href="styles/travel/style.css">
+<!--  Updated Styles -->
+<link rel="stylesheet" href="styles/travel/updates.css">
+ <!-- <link rel="stylesheet" href="//cdn.rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.css">  -->
+<!--  Responsive Styles -->
+<link rel="stylesheet" href="styles/travel/responsive.css">
+<link rel="stylesheet" href="styles/travel/ngProgress.css">
+<!-- CSS for IE -->
+<!--  [if lte IE 9]> <![endif] -->
+ <link rel="stylesheet" type="text/css"
+	href="styles/travel/retailer.min.css" />
+ <link id="main-style" rel="stylesheet" href="styles/travel/style.css">
+<link rel="stylesheet"
+	href="styles/travel/angular-rangeslider/angular.rangeSlider.css">
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- [if lt IE 9]><![endif] -->
+<style>
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th,
+	.table>thead>tr>td, .table>thead>tr>th {
+	padding: 4px;
+	padding-top: 0px;
+	padding-bottom: 1px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border: none;
+}
+
+.tab-pane label {
+	font-family: 'Dosis', sans-serif;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1.5px;
+	color: #000;
+}
+
+#footer {
+	background-color: white;
+}
+
+.posit {
+	outline: 1px solid red;
+}
+
+.search-tabs>.active {
+	background-color: orange;
+	border-left: 3px solid orange;
+	color: white;
+	opacity: 1;
+}
+</style>
+
+</head>
+
+<body class="ng-cloak">
+	<div id="page-wrapper">
+		<!-- <%@include file="/WEB-INF/jsp/retailer-header.jsp"%> -->
+		<section id="content" class="image-bg1">
+			<div class="container">
+				<div class="row">
+					<div id="main" class="col-sm-8 col-md-9">
+						<div class="search-box-wrapper style1">
+							<div class="search-box">
+								<ul class="search-tabs clearfix">
+									<li class="active"><a href="#flights-tab"
+										data-toggle="tab">FLIGHTS</a></li>
+
+									<li class=""><a href="#bus-tab" data-toggle="tab">Bus</a></li>
+									<li class=""><a href="#hotels-tab" data-toggle="tab">Hotel</a></li>
+									<li class=""><a href="#cancellation-tab" data-toggle="tab"
+										aria-expanded="false">cancellation</a></li>
+								</ul>
+								<div class="visible-mobile">
+									<ul id="mobile-search-tabs" class="search-tabs clearfix">
+										<li class="active"><a href="#flights-tab">FLIGHTS</a></li>
+										<li><a href="#bus-tab">bus</a></li>
+										<li><a href="#hotels-tab">Hotel</a></li>
+										<li><a href="#cancellation-tab">cancellation</a></li>
+									</ul>
+								</div>
+
+								<div class="search-tab-content">
+									<div class="tab-pane fade active in" id="flights-tab"
+										ng-controller="FlightBookingCtrl" ng-init="cancelflag=false">
+										<form ng-submit="OneWay()" name="BookingForm">
+											<div class="title-container">
+												<h2 class="search-title">Search and Book Flights</h2>
+												<p>We're bringing you a new level of comfort.</p>
+												<i class="soap-icon-plane-right takeoff-effect"></i>
+											</div>
+											<div class="search-content">
+												<!--   <div class="row">
+                                                <div class="col-md-12 col-sm-12 text-right">
+                                                    <a href="" class="text-danger" ng-hide="cancelflag"
+                                                        ng-click="cancelflag = !cancelflag"
+                                                    style="font-size: 120%; font-weight: 700">Cancellation</a> <a
+                                                    href="" class="text-info" ng-hide="!cancelflag"
+                                                    ng-click="cancelflag = !cancelflag"
+                                                    style="font-size: 150%; font-weight: 700">Back to Book
+                                                Flight</a>
+                                                <div class="col-md-6  fixheight text-left"
+                                                    ng-show="cancelflag">
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                    data-toggle="modal" data-target="#FullcancelModal"
+                                                    style="border-radius: 0px 0px 0px 0px; outline: 0.2px solid red; border: 0.5px solid red">Cancel
+                                                    Flight</button>
+                                                </div>
+
+                                            </div>
+                                        </div> -->
+												<div class="row choose-travel">
+													<div class="col-xs-4 col-xs-12" ng-hide="cancelflag">
+														<label> <input type="radio"
+															ng-model="FlightModel.type" value="one_way">Oneway
+														</label>
+													</div>
+													<div class="col-xs-4 col-xs-12" ng-hide="cancelflag">
+														<label> <input type="radio"
+															ng-model="FlightModel.type" value="round_trip">Round
+															Trip
+														</label>
+													</div>
+												</div>
+												<hr>
+												<div class="row" ng-hide="cancelflag">
+													<div class="row">
+														<div class="col-md-6">
+															<div class="form-group">
+																<label>Leaving From</label> <input type="text"
+																	ng-model="FlightModel.from"
+																	uib-typeahead="list.AIRPORTCODE as list.CITY  for list in airportcodelist | filter:$viewValue | limitTo:8"
+																	class="input-text full-width"
+																	placeholder="Enter specific airpot" name="leaving"
+																	required> <span class="error-message"
+																	ng-show="BookingForm.leaving.$dirty
+        && BookingForm.leaving.$error.required"
+																	style="color: red">Enter Origin/specific airpot</span>
+															</div>
+														</div>
+														<div class="col-md-6">
+															<div class="form-group">
+																<label>Going To</label> <input type="text"
+																	ng-model="FlightModel.to"
+																	uib-typeahead="list.AIRPORTCODE as list.CITY  for list in airportcodelist | filter:$viewValue | limitTo:8"
+																	class="input-text full-width"
+																	placeholder="Enter specific airpot" name="going"
+																	required> <span class="error-message"
+																	ng-show="BookingForm.going.$dirty
+        && BookingForm.going.$error.required"
+																	style="color: red">Enter Destination/specific
+																	airpot</span>
+															</div>
+														</div>
+													</div>
+
+													<div class="row">
+														<!-- <div ng-class="{'col-xs-12 col-sm-12': FlightModel.type==='one_way', 'col-xs-6 col-sm-6':FlightModel.type==='round_trip'}"> -->
+														<div class="col-xs-6 col-sm-6">
+
+															<label>Departing</label>
+															<div class="form-group row">
+																<div class="col-xs-12">
+																	<div class="datepicker-wrap">
+																		<input type="text" class="input-text full-width"
+																			placeholder="mm/dd/yy" ng-model="FlightModel.godate"
+																			name="depdate" required /> <span
+																			class="error-message"
+																			ng-show="BookingForm.depdate.$dirty
+        && BookingForm.depdate.$error.required"
+																			style="color: red">Enter Date</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-xs-6 col-sm-6"
+															ng-hide="FlightModel.type==='one_way'">
+
+															<label>Returning</label>
+															<div class="form-group row">
+																<div class="col-xs-12">
+																	<div class="datepicker-wrap">
+																		<input type="text" class="input-text full-width"
+																			placeholder="mm/dd/yy"
+																			ng-model="FlightModel.returndate" name="return" /> <span
+																			class="error-message"
+																			ng-show="BookingForm.return.$dirty
+        && BookingForm.return.$error.required"
+																			style="color: red">Enter Date</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<br>
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group row">
+																<div class="col-xs-6 col-md-6">
+																	<label>Class Types</label>
+																	<div class="selector">
+																		<select class="full-width"
+																			ng-model="FlightModel.classtype" name="class"
+																			required>
+																			<!-- <option value=""></option> -->
+																			<option value="ECONOMY">Econmy</option>
+																			<option value="BUSINESS">Business</option>
+																		</select>
+																	</div>
+																	<span class="error-message"
+																		ng-show="BookingForm.class.$dirty
+    && BookingForm.class.$error.required"
+																		style="color: red">Enter Class Type</span>
+																</div>
+																<div class="col-xs-6 col-md-6">
+																	<label>Resident</label>
+																	<div class="selector">
+																		<select class="full-width"
+																			ng-model="FlightModel.residentofIndia"
+																			name="resident" required>
+																			<!-- <option value=""></option> -->
+																			<option value="1">India</option>
+																			<option value="0">others</option>
+																		</select>
+																	</div>
+																	<span class="error-message"
+																		ng-show="BookingForm.resident.$dirty
+    && BookingForm.resident.$error.required"
+																		style="color: red">Select Y/N</span>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-sm-12 col-md-12">
+
+															<div class="form-group row">
+																<div class="col-xs-4">
+																	<label>Adults</label>
+																	<div class="selector">
+																		<select class="full-width"
+																			ng-model="FlightModel.adults" name="adults" required>
+																			<option value="1">01</option>
+																			<option value="2">02</option>
+																			<option value="3">03</option>
+																			<option value="4">04</option>
+																		</select>
+																	</div>
+																	<span class="error-message"
+																		ng-show="BookingForm.adults.$dirty
+    && BookingForm.adults.$error.required"
+																		style="color: red">Select No of Adults</span>
+																</div>
+																<div class="col-xs-4">
+																	<label>Kids</label>
+																	<div class="selector">
+																		<select class="full-width" ng-model="FlightModel.kids"
+																			name="kids" required>
+
+																			<option value="0">00</option>
+																			<option value="1">01</option>
+																			<option value="2">02</option>
+																			<option value="3">03</option>
+																			<option value="4">04</option>
+																		</select>
+																	</div>
+																	<span class="error-message"
+																		ng-show="BookingForm.kids.$dirty
+    && BookingForm.kids.$error.required"
+																		style="color: red">Select No of Kids</span>
+																</div>
+																<div class="col-xs-4">
+																	<label>Infants</label>
+																	<div class="selector">
+																		<select class="full-width"
+																			ng-model="FlightModel.infants" name="infants"
+																			required>
+																			<option value="0"
+																				ng-if="ToNumeric(FlightModel.adults) >= ToNumeric('0')">00</option>
+																			<option value="1"
+																				ng-if="ToNumeric(FlightModel.adults) >= ToNumeric('1')">01</option>
+																			<option value="2"
+																				ng-if="ToNumeric(FlightModel.adults) >= ToNumeric('2')">02</option>
+																			<option value="3"
+																				ng-if="ToNumeric(FlightModel.adults) >= ToNumeric('3')">03</option>
+																			<option value="4"
+																				ng-if="ToNumeric(FlightModel.adults) >= ToNumeric('4')">04</option>
+																		</select>
+																	</div>
+																	<span class="error-message"
+																		ng-show="BookingForm.infants.$dirty
+    && (Isinfantinvalid())"
+																		style="color: red">choose No of Infants less or
+																		equal to no of adults</span>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="form-group col-sm-12 col-md-12 fixheight">
+														<label class="hidden-xs">&nbsp;</label>
+														<button class="icon-check full-width">SEARCH NOW
+														</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane fade" id="bus-tab"
+										ng-controller="BusViewCtrl">
+										<form ng-submit="BusData(busform.$valid)" name="busform">
+											<div class="title-container">
+												<h2 class="search-title">Search and Book Bus</h2>
+												<p>We're making bus ticketing hassale free.</p>
+
+											</div>
+											<div class="search-content">
+												<div class="form-group">
+													<label>Leaving From</label> <input type="text"
+														name="bus_source" ng-model="BusModel.busorigin"
+														uib-typeahead=" list.originName for list in buslist | filter: busform.bus_source.$viewValue | limitTo:8"
+														class="input-text full-width" placeholder="Enter City"
+														required> <span class="error-message"
+														ng-show="busform.bus_source.$dirty && busform.bus_source.$error.required"
+														style="color: red">This Field is required</span> <span
+														class="error-message"
+														ng-show="busform.bus_source.$dirty && ((busform.bus_source.$error.required == null) && (!BusModel.destinationflag))"
+														style="color: red">Enter Valid Location</span>
+												</div>
+												<br>
+
+												<div class="form-group">
+													<label>Going To</label> <input type="text"
+														class="input-text full-width" name="bus_destin"
+														ng-model="BusModel.busdestination"
+														uib-typeahead=" deslist.destinationName for deslist in busdest | filter:$viewValue | limitTo:8"
+														class="input-text full-width" placeholder="Enter City"
+														ng-disabled="(!(busform.bus_source.$error.required == null) || (!BusModel.destinationflag))"
+														required /> <span class="error-message"
+														ng-show="((busform.bus_destin.$dirty && busform.bus_destin.$error.required == null) && BusModel.invalidDestinFlag)"
+														style="color: red">Enter valid Destination </span> <span
+														class="error-message"
+														ng-show="busform.bus_destin.$dirty && busform.bus_destin.$error.required"
+														style="color: red">This Field is required</span>
+												</div>
+
+												<br>
+												<div class="row">
+													<div class="col-xs-6">
+														<label>Departure</label>
+														<div class="datepicker-wrap">
+															<input type="text" ng-model="BusModel.date"
+																name="datevalue" class="input-text full-width"
+																placeholder="mm/dd/yy" required /> <span
+																class="error-message"
+																ng-show="busform.datevalue.$dirty && busform.datevalue.$error.required"
+																style="color: red">This Field is required</span>
+														</div>
+													</div>
+
+													<div class="form-group row">
+														<div class="col-xs-6">
+															<label>No Of Passangers</label>
+															<div class="selector">
+																<select class="full-width" ng-model="BusModel.passanger"
+																	required>
+																	<option value="1">01</option>
+																	<option value="2">02</option>
+																	<option value="3">03</option>
+																	<option value="4">04</option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+												<br>
+												<div class="form-group col-sm-12 col-md-12 fixheight">
+													<label class="hidden-xs">&nbsp;</label>
+													<button class="icon-check full-width" >SEARCH NOW</button>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="tab-pane fade" id="hotels-tab"
+										ng-controller="HotelSearchCtrl">
+										<form ng-submit="HotelSearch(Hotelsearch.$valid)" name="Hotelsearch">
+										<div class="title-container">
+												<h2 class="search-title">Search and Book Hotel</h2>
+												<p>We provide Hotel Booking at low Rate</p>
+
+											</div>
+											<div class="search-content">
+                                            <div class="form-group ">
+                                                <label>Your Destination</label>
+                                                <!-- <input type="text" class="input-text full-width" placeholder="enter a destination or hotel name" /> -->
+                                                <!-- <select class="full-width" ng-model="HotelModel.destination" ng-options='list.cityName for list in hotelcodelist'>
+                                                    <option value="">enter a destination or hotel name</option>
+                                                </select> -->
+                                                <input type="text" ng-model="HotelModel.destination" uib-typeahead="list.cityName for list in hotelcodelist | filter:$viewValue | limitTo:8" class="input-text full-width" placeholder="Search">
+
+                                            </div>
+                                             <br>
+                                            <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <label>Check In</label>
+                                                        <div class="datepicker-wrap">
+                                                            <input type="text" name="date_from" class="input-text full-width" placeholder="mm/dd/yy" ng-model="HotelModel.checkin" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <label>Check Out</label>
+                                                        <div class="datepicker-wrap">
+                                                            <input type="text" name="date_to" class="input-text full-width" placeholder="mm/dd/yy" ng-model="HotelModel.checkout" />
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                             <div class="col-xs-6">
+                                              <label>Rooms</label>
+                                                        <div class="selector">
+                                                            <select class="full-width" ng-model="HotelModel.room" ng-click="addRow()">
+                                                                <!-- <option value="">choose</option> -->
+                                                                <option value="1">01</option>
+                                                                <option value="2">02</option>
+                                                                <option value="3">03</option>
+                                                                <option value="4">04</option>
+                                                            </select>
+                                                        </div>
+                                             </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                            <div class="form-group col-sm-12 col-md-12" style="margin-top: 1%">
+                                               <!--  <h4>Person Count</h4> -->
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <table class="table table-condensed table-responsive" style="border:none;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="font-size:9pt;">
+                                                                        <label>Adults</label>
+                                                                    </th>
+                                                                    <th style="font-size:9pt;">
+                                                                        <label>Childs</label>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="val in newrow">
+                                                                    <td>
+                                                                        <div class="selector" ng-init="HotelModel.adults[$index] = '1'">
+                                                                            <select class="full-width" ng-model="HotelModel.adults[$index]">
+                                                                                <option value="1">01</option>
+                                                                                <option value="2">02</option>
+                                                                                <option value="3">03</option>
+                                                                                <option value="4">04</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="selector" ng-click="KidTracker($index)">
+                                                                            <select class="full-width" ng-model="HotelModel.kids[$index]">
+                                                                                <option value="">choose</option>
+                                                                                <option value="1">01</option>
+                                                                                <option value="2">02</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <table class="table table-condensed table-responsive"  style="border:none;fon">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="font-size:9pt;">
+                                                                        <label>Child1 Age</label>
+                                                                    </th>
+                                                                    <th style="font-size:9pt;">
+                                                                        <label>Child2 Age</label>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="val in kidarray" style="border: none">
+                                                                    <td>
+                                                                        <p ng-show="!val[0]" style="padding: 9px">&shy;</p>
+                                                                        <div class="selector" ng-show="val[0]">
+                                                                            <!-- <input class="form-control" type="text" ng-model="HotelModel.kidOneAge"/> -->
+                                                                            <select class="full-width" ng-model="HotelModel.kidOneAge[$index]">
+                                                                                <option value="">choose</option>
+                                                                                <option value="1">01</option>
+                                                                                <option value="2">02</option>
+                                                                                <option value="3">03</option>
+                                                                                <option value="4">04</option>
+                                                                                <option value="5">05</option>
+                                                                                <option value="6">06</option>
+                                                                                <option value="7">07</option>
+                                                                                <option value="8">08</option>
+                                                                                <option value="9">09</option>
+                                                                                <option value="10">10</option>
+                                                                                <option value="11">11</option>
+                                                                                <option value="12">12</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p ng-show="!val[1]" style="padding: 9px">&shy;</p>
+                                                                        <div class="selector" ng-show="val[1]">
+                                                                            <select class="full-width" ng-model="HotelModel.kidTwoAge[$index]">
+                                                                                <option value="">choose</option>
+                                                                                <option value="1">01</option>
+                                                                                <option value="2">02</option>
+                                                                                <option value="3">03</option>
+                                                                                <option value="4">04</option>
+                                                                                <option value="5">05</option>
+                                                                                <option value="6">06</option>
+                                                                                <option value="7">07</option>
+                                                                                <option value="8">08</option>
+                                                                                <option value="9">09</option>
+                                                                                <option value="10">10</option>
+                                                                                <option value="11">11</option>
+                                                                                <option value="12">12</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-12 col-md-12 fixheight">
+														<label class="hidden-xs">&nbsp;</label>
+														<button class="icon-check full-width">SEARCH NOW
+														</button>
+													</div>
+                                        </div>
+                                        </div>
+										</form>
+									</div>
+									<div class="tab-pane fade" id="cancellation-tab">
+										<div class="title-container">
+											<h2 class="search-title">Cancel Booked Ticket</h2>
+											<p>Cancel your tickets easily in few steps.</p>
+										</div>
+										<div class="search-content">
+											<h5 class="title"></h5>
+											<div class="row">
+												<div class="col-md-6">
+													<button type="button"
+														class="btn btn-danger btn-lg btn-block"
+														data-toggle="modal" data-target="#FullcancelModal"
+														style="text-align: center; padding: 0px;">Cancel
+														Flight</button>
+												</div>
+											</div>
+											<h5 class="title"></h5>
+											<h5 class="title"></h5>
+											<br>
+											<hr>
+											<br>
+											<div class="row">
+												<div class="col-md-6">
+													<button type="button"
+														class="btn btn-danger btn-lg btn-block"
+														data-toggle="modal" data-target="#BusCancelModal"
+														style="text-align: center; padding: 0px;">Cancel
+														Bus</button>
+												</div>
+											</div>
+											<h5 class="title"></h5>
+											<h5 class="title"></h5>
+											<br>
+											<hr>
+											<br>
+
+											<div class="row">
+												<div class="col-md-6">
+													<button type="button"
+														class="btn btn-danger btn-lg btn-block"
+														data-toggle="modal" data-target="#HotelCancelModal"
+														style="text-align: center; padding: 0px;">Cancel
+													 Hotel </button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+
+		<footer id="footer">
+
+			<div class="bottom">
+				<div class="container">
+					<div class="pull-right">
+						<a id="back-to-top" href="#" class="animated"
+							data-animation-type="bounce"><i
+							class="soap-icon-longarrow-up circle"></i></a>
+					</div>
+					<div class="copyright pull-right">
+						<p>Move To Top</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+	</div>
+	<!--flight modal start-->
+	<div ng-controller="FlightCancelController">
+		<!-- Modal for full cancellation start-->
+		<div id="FullcancelModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content" ng-init="oticketunselect = true">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Cancellation Form</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row" ng-show="fullcancelflag">
+							<span class="error-message"
+								style="color: green; font-size: 170%; font-width: 900">
+								Full cancellation successfull .. </span>
+						</div>
+						<div class="row" ng-show="PartactiveFlag">
+							<div class="col-sms-10 col-sm-10 col-md-10">
+								<div class='table-responsive'>
+									<table class='table table-condensed'
+										ng-repeat="customerdat in Customers">
+										<thead>
+											<tr>
+												<th>Customer Name</th>
+												<th>Flight Code</th>
+												<th>Flight Number</th>
+												<th>From</th>
+												<th>To</th>
+												<th>Select To Cancel</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="ticketobj in customerdat.cancelTicketDetails">
+												<td>{{customerdat.firstName + ' ' +
+													customerdat.lastName}}</td>
+												<td>{{flightCode}}</td>
+												<td>{{ticketobj.flightNumber}}</td>
+												<td>{{ticketobj.origin}}</td>
+												<td>{{ticketobj.destination}}</td>
+												<td>
+													<button type="button" class="btn  btn-xs"
+														ng-class="{'btn-warning':IsSelected(ticketobj, customerdat)[0], 'btn-info': !IsSelected(ticketobj, customerdat)[0]}"
+														ng-click="oticketunselect = false; TicketToCancel(ticketobj, customerdat)">
+														Select Ticket</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<button type="button" class="btn  fullwidth"
+										ng-click="ConfirmCancel()" ng-disable="oticketunselect">
+										CONFIRM CANCEL</button>
+								</div>
+							</div>
+						</div>
+						<div class="row" ng-show="!PartactiveFlag">
+							<div id="main" class="col-sms-6 col-sm-8 col-md-8">
+								<div class="booking-section travelo-box">
+
+									<form class="booking-form" name="FlightCancelForm"
+										ng-submit="FlightCancel(FlightCancelForm.$valid)">
+										<div class="person-information">
+											<!-- <h2>Your Personal Information</h2> -->
+											<div class="form-group row">
+												<div class="col-sm-6 col-md-5">
+													<label>Airline PNR</label> <input type="text"
+														class="input-text full-width" value="" placeholder=""
+														ng-model="CancelDetails.airpnr" name="airpnr" required />
+													<span class="error-message"
+														ng-show="FlightCancelForm.airpnr.$dirty
+                                                    && FlightCancelForm.airpnr.$error.required"
+														style="color: red">Enter Airline PNR</span>
+												</div>
+											</div>
+											<div class="form-group row">
+												<div class="col-sm-6 col-md-5">
+													<label>Hermes PNR</label> <input type="text"
+														class="input-text full-width" value="" placeholder=""
+														ng-model="CancelDetails.hermdata" name="hermdata" required />
+													<span class="error-message"
+														ng-show="FlightCancelForm.hermdata.$dirty
+                                                    && FlightCancelForm.hermdata.$error.required"
+														style="color: red">Enter HermesPNR</span>
+												</div>
+											</div>
+											<div class="form-group row">
+												<div class="col-sm-6 col-md-5">
+													<label>Cancel Type</label>
+													<div class="selector">
+														<select class="full-width" ng-model="CancelDetails.state"
+															name="state" required />
+														<option value>Choose one</option>
+														<option value="FULL">Full</option>
+														<option value="PARTIAL">Partial</option>
+														</select>
+													</div>
+													<span class="error-message"
+														ng-show="FlightCancelForm.state.$dirty
+                                                    && FlightCancelForm.state.$error.required"
+														style="color: red">Enter cancelType</span>
+												</div>
+
+											</div>
+
+
+										</div>
+										<hr />
+										<div class="form-group row">
+											<div class="col-sm-6 col-md-5">
+												<button type="submit" class="full-width btn-large">SUBMIT</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!--flight cancellation modal end-->
+	</div>
+	<!--flight modal end-->
+
+
+	</div>
+
+
+	<!--  Javascript -->
+
+	<!-- 		<script type="text/javascript"
+		src="js/dev/retailer/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript"
+		src="js/dev/retailer/jquery.noconflict.js"></script>
+	<script type="text/javascript"
+		src="js/dev/retailer/modernizr.2.7.1.min.js"></script>
+	<script type="text/javascript"
+		src="js/dev/retailer/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript"
+		src="js/dev/retailer/jquery.placeholder.js"></script>
+	<script type="text/javascript"
+		src="js/dev/retailer/jquery-ui.1.10.4.min.js"></script>
+	  Twitter Bootstrap
+	<script type="text/javascript" src="js/dev/retailer/bootstrap.js"></script>
+	load revolution slider scripts
+		<script type="text/javascript"
+		src="components/revolution_slider/js/jquery.themepunch.tools.min.js"></script>
+	<script type="text/javascript"
+		src="components/revolution_slider/js/jquery.themepunch.revolution.min.js"></script>
+	 load BXSlider scripts
+	<script type="text/javascript"
+		src="components/jquery.bxslider/jquery.bxslider.min.js"></script>
+	load FlexSlider scripts
+	<script type="text/javascript"
+		src="components/flexslider/jquery.flexslider-min.js"></script>
+	Google Map Api
+	<script type='text/javascript'
+		src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
+	<script type="text/javascript" src="js/dev/retailer/gmap3.min.js"></script>
+	parallax
+	<script type="text/javascript"
+		src="js/dev/retailer/jquery.stellar.min.js"></script>
+	waypoint
+	<script type="text/javascript" src="js/dev/retailer/waypoints.min.js"></script>
+	load page Javascript
+	<script type="text/javascript" src="js/dev/retailer/theme-scripts.js"></script>
+	<script type="text/javascript" src="js/dev/retailer/scripts.js"></script>
+	 <script type="text/javascript" src="js/dev/retailer/retailjquery.min.js"></script>
+	<script type="text/javascript">
+		tjq(document).ready(function() {
+			tjq('.revolution-slider').revolution({
+				sliderType : "standard",
+				sliderLayout : "auto",
+				dottedOverlay : "none",
+				delay : 9000,
+				navigation : {
+					keyboardNavigation : "off",
+					keyboard_direction : "horizontal",
+					mouseScrollNavigation : "off",
+					mouseScrollReverse : "default",
+					onHoverStop : "on",
+					touch : {
+						touchenabled : "on",
+						swipe_threshold : 75,
+						swipe_min_touches : 1,
+						swipe_direction : "horizontal",
+						drag_block_vertical : false
+					},
+					arrows : {
+						style : "default",
+						enable : true,
+						hide_onmobile : false,
+						hide_onleave : false,
+						tmp : '',
+						left : {
+							h_align : "left",
+							v_align : "center",
+							h_offset : 20,
+							v_offset : 0
+						},
+						right : {
+							h_align : "right",
+							v_align : "center",
+							h_offset : 20,
+							v_offset : 0
+						}
+					}
+				},
+				visibilityLevels : [ 1240, 1024, 778, 480 ],
+				gridwidth : 1170,
+				gridheight : 646,
+				lazyType : "none",
+				shadow : 0,
+				spinner : "spinner4",
+				stopLoop : "off",
+				stopAfterLoops : -1,
+				stopAtSlide : -1,
+				shuffle : "off",
+				autoHeight : "off",
+				hideThumbsOnMobile : "off",
+				hideSliderAtLimit : 0,
+				hideCaptionAtLimit : 0,
+				hideAllCaptionAtLilmit : 0,
+				debugMode : false,
+				fallbacks : {
+					simplifyAll : "off",
+					nextSlideOnWindowFocus : "off",
+					disableFocusListener : false
+				}
+			});
+		});
+	</script> -->
+	<!--Start Bus Cancelation Modal-->
+	<div class="modal fade" id="BusCancelModal"
+		ng-controller="BusCancelController">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Bus Ticket Cancellation</h4>
+				</div>
+				<div class="modal-body">
+					<!--Start Bus cancel body-->
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#penaltyid"
+							ng-click="resetFlags()">Ticket Cancel</a></li>
+						<li><a data-toggle="tab" href="#policyid"
+							ng-click="resetFlags()">Cancel Policy</a></li>
+					</ul>
+					<div class="tab-content center-block"
+						style="width: 100%; padding: 10%">
+						<div class="row tab-pane fade in active" id="penaltyid">
+							<div class="col-sm-10 col-md-8" ng-show="penaltyshow">
+								<table class="table table-responsive">
+									<caption class="text-center" style="font-size: 95%">{{capsDat}}</caption>
+									<thead style="font-size: 85%">
+										<tr>
+											<th>TicketNo</th>
+											<th>Passenger</th>
+											<th>SeatNo</th>
+											<th>Fare</th>
+											<th>Penalty</th>
+											<th class="text-right" style="margin-left: 3%"><button
+													type="submit" class="btn"
+													ng-class="{'btn-warn': NumTicketToCancel > 0, 'btn-default': NumTicketToCancel <= 0}"
+													style="border-radius: 0px; font-size: 85%"
+													ng-click="ConfirmCancelTicket()"
+													ng-disabled="NumTicketToCancel <= 0">Cancel
+													Tickets</button></th>
+										</tr>
+									</thead>
+									<tbody style="border-top: 0.5px solid grey; font-size: 85%">
+										<tr ng-repeat="paxDat  in cancellationdata.ToCancelPaxList"
+											style="padding-top: 3%">
+											<td>{{paxDat.TicketNumber}}</td>
+											<td>{{paxDat.PassengerName}}</td>
+											<td>{{paxDat.SeatNo}}</td>
+											<td>Rs {{paxDat.Fare}}</td>
+											<td>Rs {{paxDat.PenatlyAmount}}</td>
+											<td class="text-center"><input type="checkbox"
+												ng-mode="paxFlag[$index]"
+												ng-click="Selector(paxDat, $index)"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-sm-10 col-md-8" ng-show="cancelConfirmsuccess"
+								style="font-size: 120%; color: green">{{CancelConfirmRemarks}}
+							</div>
+							<div class="col-sm-10 col-md-8" ng-show="cancelConfirmfail"
+								style="font-size: 120%; color: red">{{CancelConfirmRemarks}}
+							</div>
+							<form ng-show="penaltyfail" class="booking-form"
+								name="PenaltyForm" ng-submit="GetCancel(PenaltyForm.$valid)">
+								<h5 class="text-center" style="padding-top: 2%">Show
+									Tickets For Cancellation</h5>
+								<div class="form-group row" style="margin-left: 5%">
+									<div class="col-sm-6 col-md-5">
+										<label>Transaction Id</label> <input type="text"
+											class="input-text" name="trans" ng-model="TransactId"
+											ng-pattern="/^[A-Z0-9]*$/" required>
+									</div>
+									<div class="col-sm-7 col-md-8">
+										<span class="error-message"
+											ng-show="PenaltyForm.trans.$dirty &&PenaltyForm.trans.$error.required"
+											style="color: red">This field is required</span> <span
+											class="error-message"
+											ng-show="PenaltyForm.trans.$dirty &&PenaltyForm.trans.$error.pattern"
+											style="color: red">Must be only capital letters and
+											alphanumeric</span>
+									</div>
+								</div>
+								<div class="form-group row" style="margin-left: 5%">
+									<div class="col-sm-6 col-md-5">
+										<label>Transport Id</label> <input type="text"
+											class="input-text" name="trsid" ng-model="CancelTransportId"
+											ng-pattern="/^[A-Z0-9]*$/" required>
+									</div>
+									<div class="col-sm-7 col-md-8">
+										<span class="error-message"
+											ng-show="PenaltyForm.trsid.$dirty &&PenaltyForm.trsid.$error.required"
+											style="color: red">This field is required</span> <span
+											class="error-message"
+											ng-show="PenaltyForm.trsid.$dirty &&PenaltyForm.trsid.$error.pattern"
+											style="color: red">Must be only capital letters and
+											alphanumeric</span>
+									</div>
+								</div>
+								<div class="form-group row" style="margin-left: 10%">
+									<button type="submit" class="btn btn-primary"
+										style="border-radius: 0px">Show Tickets</button>
+								</div>
+							</form>
+						</div>
+
+						<div class="row tab-pane fade" id="policyid">
+							<div ng-show="policyshow">
+								<pre>{{policyinfo}}</pre>
+							</div>
+							<div ng-show="policyfail">
+								<span class="error-message"
+									style="color: red; font-weight: 400; margin-left: 5%">
+									{{policyinfo}} </span>
+							</div>
+							<form class="booking-form" name="PolicyForm"
+								ng-submit="GetPolicy(PolicyForm.$valid)"
+								ng-show="!policyshow && !policyfail">
+
+								<h5 class="text-center" style="padding-top: 2%">Show Policy
+									Details</h5>
+								<div class="form-group row" style="margin-left: 5%">
+									<div class="col-sm-6 col-md-6">
+										<label>Transport Id</label> <input type="text"
+											class="input-text" ng-model="TransportId" name="transp"
+											ng-pattern="/^[0-9]*$/" required>
+									</div>
+									<div class="col-sm-7 col-md-8">
+										<span class="error-message"
+											ng-show="PolicyForm.transp.$dirty &&PolicyForm.transp.$error.required"
+											style="color: red">This field is required</span> <span
+											class="error-message"
+											ng-show="PolicyForm.transp.$dirty && PolicyForm.transp.$error.pattern"
+											style="color: red">Must be only Numeric</span>
+									</div>
+								</div>
+								<div class="form-group row" style="margin-left: 10%;">
+									<button type="submit" class="btn btn-primary"
+										style="border-radius: 0px">Show Policy</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!--End Bus cancel body-->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal" style="border-radius: 0px"
+						ng-click="resetFlags()">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<!--End Bus Cancellation Modal-->
+
+	<!--Start Hotel Cancelation Modal-->
+	<!--Start Hotel Cancelation Modal-->
+	<div class="modal fade" id="HotelCancelModal"
+		ng-controller="HotelCancelController">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close" ng-click="resetFlags()" >
+						<span aria-hidden="true">&times;</span> <span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Hotel Booking Cancellation</h4>
+				</div>
+				<div class="modal-body">
+				<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#roomcancel"
+							>Room Cancel</a></li>
+						<li><a data-toggle="tab" href="#hotelcancelpolicy"
+							>Cancel Policy</a></li>
+					</ul>
+					<div class="tab-content center-block"
+						style="width: 100%; padding: 10%" >
+						<div class="row tab-pane fade in active" id="roomcancel">
+							<form ng-hide="(proceedFlag)" class="booking-form"
+								name="hotelcancel">
+								<div class="form-group row" style="margin-left: 5%">
+									<div class="col-sm-6 col-md-5">
+										<label>Booking ID</label> <input type="text"
+											class="input-text" name="bookingid" ng-model="BookingID"
+											ng-pattern="/^[A-Z0-9]*$/" required>
+											<label>Email ID</label> <input type="email"
+											class="input-text" name="emailid" ng-model="EmailID"
+											ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required>
+									</div>
+								</div>
+								<div class="form-group row" style="margin-left: 10%">
+									<button class="btn btn-primary"
+										style="border-radius: 0px" ng-click="proceedFlag = true;">Proceed</button>
+								</div>
+							</form>
+							</div>
+							<!-- <pre>{{hotelcancel}}</pre> -->
+
+							<div ng-show="proceedFlag" class="form-group row" style="margin-left: 10%">
+							<h3> Cancel Hotel Booking</h3>
+									<button type="submit" class="btn btn-primary"
+										style="border-radius: 0px" ng-click="confirmFlag = true;GetCancel(hotelcancel.$valid)">Confirm</button>
+								</div>
+
+					<div class="row tab-pane fade" id="hotelcancelpolicy">
+					  <div ng-show="cancelpolicy">
+								<pre>{{Hotelpolicyinfo}}</pre>
+							</div>
+							<div ng-show="cancelpolicyfail">
+								<span class="error-message"
+									style="color: red; font-weight: 400; margin-left: 5%">
+									{{Hotelpolicyinfo}} </span>
+							</div>
+							<form class="booking-form" name="hotelcancelpolicyForm"
+								ng-submit="HotelCancelPolicy(hotelcancelpolicyForm.$valid)"
+								ng-show="!cancelpolicy&& !cancelpolicyfail">
+
+								<h5 class="text-center" style="padding-top: 2%">Show Policy
+									Details</h5>
+								<div class="form-group row" style="margin-left: 5%">
+									<label>Booking ID</label> <input type="text"
+											class="input-text" name="policybookingid" ng-model="BookingID"
+											ng-pattern="/^[A-Z0-9]*$/" required>
+								</div>
+								<div class="form-group row" style="margin-left: 10%;">
+									<button type="submit" class="btn btn-primary"
+										style="border-radius: 0px">Show Policy</button>
+								</div>
+							</form>
+					</div>
+				</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal" style="border-radius: 0px"
+						ng-click="resetFlags()">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+
+
+<!-- 			<script type="text/javascript" src="js/dev/bower_components/angular.js"></script>
+	<script type="text/javascript"
+		src="js/dev/bower_components/angular-animate.min.js"></script>
+	<script type="text/javascript"
+		src="js/dev/bower_components/ui-bootstrap-tpls.js"></script>
+	<script
+		src="js/dev/bower_components/angular-rangeslider/angular.rangeSlider.js"></script>
+	<script type="text/javascript"
+		src="js/dev/bower_components/angular-toastr.tpls.min.js"></script>
+	<script type="text/javascript"
+		src="js/dev/bower_components/ngprogress.min.js"></script> -->
+	<script src="js/core/retail-index-lib.min.js"></script>
+	 <script src="js/core/retaillib.min.js"></script>
+<script src="js/core/retail-index.min.js"></script>
+	<!--  <script src="js/dev/retailer/app.js" type="text/javascript"></script>
+		<script src="js/dev/retailer/controller/flightbookingCtrl.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/flightbookingFact.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/airportlistFact.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/get_taxFact.js"
+			type="text/javascript"></script>
+
+		<script src="js/dev/retailer/factory/progressbarfactoryretail.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/rechargeFact.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/controller/rechargeCtrl.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/controller/hotelsearchCtrl.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/hoteldetailsFact.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/hotellistFact.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/controller/busviewCtrl.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/controller/buscancelCtrl.js"
+			type="text/javascript"></script>
+		<script src="js/dev/retailer/factory/buslistFact.js"
+			type="text/javascript"></script>
+
+		<script type="text/javascript"
+			src="js/dev/retailer/configs/toastrconfig.js"></script>
+		<script type="text/javascript"
+			src="js/dev/retailer/factory/encodefilter.js"></script>
+
+		<script src="js/dev/retailer/controller/flightcancelCtrl.js"
+			charset="utf-8"></script>   -->
+		<script src="js/dev/retailer/controller/HotelCancelCtrl.js"
+		type="text/javascript"></script>
+</body>
+
+</html>
